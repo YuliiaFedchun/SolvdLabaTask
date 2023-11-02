@@ -1,4 +1,4 @@
-package com.solvd.laba.block1.task1;
+package com.solvd.laba.block1.task1.subt1;
 
 public class Invitation {
 
