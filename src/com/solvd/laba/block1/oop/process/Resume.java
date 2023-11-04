@@ -1,6 +1,4 @@
-package com.solvd.laba.block1.task2.process;
-
-import java.util.List;
+package com.solvd.laba.block1.oop.process;
 
 public class Resume {
     private Appointment appointment;

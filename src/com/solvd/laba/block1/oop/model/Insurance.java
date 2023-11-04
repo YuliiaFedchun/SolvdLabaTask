@@ -1,4 +1,4 @@
-package com.solvd.laba.block1.task2.model;
+package com.solvd.laba.block1.oop.model;
 
 public class Insurance {
     private String policyNumber;

@@ -1,19 +1,12 @@
-package com.solvd.laba.block1.task2.model;
+package com.solvd.laba.block1.oop.model;
 
-public class Person {
+public abstract class Person {
     String firstName;
     String lastName;
     int age;
     String phoneNumber;
     String address;
 
-    public Person(String firstName, String lastName, int age, String phoneNumber, String address) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -54,4 +47,6 @@ public class Person {
     public String getAddress() {
         return address;
     }
+
+    public abstract void showContactInfo();
 }
