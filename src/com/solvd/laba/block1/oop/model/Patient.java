@@ -1,10 +1,13 @@
 package com.solvd.laba.block1.oop.model;
 
+import com.solvd.laba.block1.oop.model.payment.PaymentSystem;
+
 import java.util.Objects;
 
 public class Patient extends Person {
     private String email;
     private Insurance insurance;
+    private PaymentSystem paymentSystem;
 
     public Patient(String firstName, String lastName, int age, String phoneNumber, String address, String email) {
         this.firstName = firstName;
@@ -29,6 +32,9 @@ public class Patient extends Person {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public PaymentSystem choosePaymentSystem(){
+        return null;
     }
 
     @Override

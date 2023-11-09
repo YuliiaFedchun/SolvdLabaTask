@@ -2,7 +2,7 @@ package com.solvd.laba.block1.oop.process;
 
 import com.solvd.laba.block1.oop.model.Patient;
 
-public class Receipt {
+public class Receipt implements Printable{
     private Patient patient;
     private double cost;
 
@@ -25,5 +25,12 @@ public class Receipt {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    @Override
+    public void print() {
+        System.out.println("Receipt{" +
+                            "patient=" + patient.getFirstName() + " " + patient.getLastName() +
+                            ", cost=" + cost + "$}");
     }
 }

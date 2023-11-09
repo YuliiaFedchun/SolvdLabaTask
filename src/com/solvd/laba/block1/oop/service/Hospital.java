@@ -1,8 +1,10 @@
 package com.solvd.laba.block1.oop.service;
 
+import com.solvd.laba.block1.oop.Evaluation;
+import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.model.Patient;
 
-public class Hospital {
+public class Hospital implements Department, Evaluation {
     private Patient[] patientsInHospital;
     private int patientsCount = 0;
 
@@ -18,17 +20,20 @@ public class Hospital {
         this.patientsInHospital = patientsInHospital;
     }
 
-    public boolean addPatient(Patient patient) {
+    public boolean hospitalizePatient(int reportId, Patient patient) {
         if (findPatient(patient.getLastName()) != null
                 && findPatient(patient.getLastName()).equals(patient)) {
-            System.out.println("This patient is in the hospital now");
+            System.out.println("This patient is in the hospital now.");
             return false;
-        } else {
+        } else if (Clinic.findMedicalReportById(reportId).isHospitalized()) {
             patientsInHospital[patientsCount] = patient;
             patientsCount++;
             System.out.println("The patient " + patient.getLastName() + " was admitted to the hospital.");
             return true;
+        } else {
+            System.out.println("The patient does not require hospitalization.");
         }
+        return false;
     }
 
     public Patient findPatient(String lastName) {
@@ -39,6 +44,21 @@ public class Hospital {
                 }
             }
         }
+        return null;
+    }
+
+    @Override
+    public boolean isOpened(WeekDay weekDay, int hour) {
+        return true;
+    }
+
+    @Override
+    public double getRating() {
+        return 0;
+    }
+
+    @Override
+    public String getResponse() {
         return null;
     }
 }

@@ -1,24 +1,26 @@
 package com.solvd.laba.block1.oop.service;
 
-import com.solvd.laba.block1.oop.enums.Status;
+import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.StaffManager;
 
-public class Registry {
+import java.util.Random;
+
+public class Registry implements Department{
 
     protected StaffManager staff;
     protected Patient[] patientsInClinic;
-    protected Appointment[] appointments;
+    protected static Appointment[] appointmentsList;
 
     private int appointmentsCount;
 
     public Registry(StaffManager staff) {
         this.staff = staff;
         this.patientsInClinic = new Patient[20];
-        this.appointments = new Appointment[40];
+        this.appointmentsList = new Appointment[40];
         this.appointmentsCount = 0;
     }
 
@@ -30,12 +32,12 @@ public class Registry {
         this.patientsInClinic = patientsInClinic;
     }
 
-    public Appointment[] getAppointments() {
-        return appointments;
+    public Appointment[] getAppointmentsList() {
+        return appointmentsList;
     }
 
-    public void setAppointments(Appointment[] appointments) {
-        this.appointments = appointments;
+    public void setAppointmentsList(Appointment[] appointmentsList) {
+        this.appointmentsList = appointmentsList;
     }
 
     public int getAppointmentsCount() {
@@ -66,34 +68,35 @@ public class Registry {
         }
     }
 
-    public Appointment registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
+    public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
         if (staff.findDoctor(doctor.getLastName()) == null) {
             System.out.println("This doctor doesn't work here.");
-            return null;
+            return 0;
         }
 
         if (findPatient(patient.getLastName()) == null) {
             System.out.println("You should register this patient first");
-            return null;
+            return 0;
         }
 
         if (staff.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
+            Random random = new Random();
 
-            Appointment appointment = new Appointment(doctor, patient, weekDay, timeSlot);
+            Appointment appointment = new Appointment(random.nextInt(999), doctor, patient, weekDay, timeSlot);
 
-            appointments[appointmentsCount] = appointment;
+            appointmentsList[appointmentsCount] = appointment;
             appointmentsCount++;
-            appointment.setStatus(Status.PLANED);
+            appointment.setStatus(AppointmentStatus.PLANED);
 
             doctor.chooseTimeSlot(weekDay, timeSlot);
             System.out.println("Your appointment for " + patient.getLastName() + " is planed. \nAppointment info: \n" +
                     appointment.toString());
-            return appointment;
+            return appointment.getId();
         } else {
             System.out.println("Chosen time slot isn't available.");
         }
 
-        return null;
+        return 0;
     }
 
     private Patient findPatient(String lastName) {
@@ -105,4 +108,20 @@ public class Registry {
         return null;
     }
 
+    public static Appointment findAppointmentById(int id){
+        for (int i = 0; i < appointmentsList.length; i++){
+            if (appointmentsList[i].getId() == id){
+                return appointmentsList[i];
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isOpened(WeekDay weekDay, int hour) {
+        if (hour >= 8 && hour < 19) {
+            return true;
+        }
+        return false;
+    }
 }

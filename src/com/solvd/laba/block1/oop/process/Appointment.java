@@ -1,25 +1,31 @@
 package com.solvd.laba.block1.oop.process;
 
-import com.solvd.laba.block1.oop.enums.Status;
+import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
 
 import java.util.Objects;
 
-public class Appointment {
+public class Appointment implements Printable{
+    private int id;
     private Doctor doctor;
     private Patient patient;
     private WeekDay weekDay;
     private int timeSlot;
-    private Status status;
+    private AppointmentStatus appointmentStatus;
 
-    public Appointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
+    public Appointment(int id, Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
+        this.id = id;
         this.doctor = doctor;
         this.patient = patient;
         this.weekDay = weekDay;
         this.timeSlot = timeSlot;
-        this.status = Status.NEW;
+        this.appointmentStatus = AppointmentStatus.NEW;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public Doctor getDoctor() {
@@ -54,12 +60,12 @@ public class Appointment {
         this.timeSlot = timeSlot;
     }
 
-    public Status getStatus() {
-        return status;
+    public AppointmentStatus getStatus() {
+        return appointmentStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(AppointmentStatus appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
     @Override
@@ -79,10 +85,14 @@ public class Appointment {
     }
 
     @Override
-    public String toString() {
-        return "doctor=" + doctor.toString() + "\n" +
+    public void print() {
+        System.out.println(
+                "Appointment{" +
+                "id=" + id + "\n" +
+                "doctor=" + doctor.toString() + "\n" +
                 "patient=" + patient.toString() + "\n" +
                 "weekDay=" + weekDay +
-                ", time=" + (9 + timeSlot / 2) + ":" + (3 * (timeSlot % 2)) + "0";
+                ", time=" + (9 + timeSlot / 2) + ":" + (3 * (timeSlot % 2)) + "0" + '}'
+        );
     }
 }

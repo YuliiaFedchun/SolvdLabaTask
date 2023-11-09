@@ -1,11 +1,20 @@
 package com.solvd.laba.block1.oop.model;
 
+import com.solvd.laba.block1.oop.Evaluation;
+import com.solvd.laba.block1.oop.enums.Diagnosis;
+import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
+import com.solvd.laba.block1.oop.process.Appointment;
+import com.solvd.laba.block1.oop.process.MedicalReport;
 
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
-public class Doctor extends Person {
+import static com.solvd.laba.block1.oop.enums.Symptom.*;
+import static com.solvd.laba.block1.oop.enums.Symptom.FEVER;
+
+public class Doctor extends Person implements Worker, Evaluation {
 
     private String speciality;
     private int[][] schedule;
@@ -20,7 +29,7 @@ public class Doctor extends Person {
         this.address = address;
         this.speciality = speciality;
         this.consultationCost = consultationCost;
-        schedule = new int[7][10];
+        this.schedule = new int[7][10];
     }
 
     public int getConsultationCost() {
@@ -132,6 +141,13 @@ public class Doctor extends Person {
         return false;
     }
 
+    @Override
+    public void showProfessionalInfo() {
+        System.out.println("Speciality: " + speciality + "\n" +
+                            "Cost of consultation: " + consultationCost + "$");
+    }
+
+    @Override
     public void showSchedule() {
         System.out.println("Monday: " + Arrays.toString(schedule[0]) + "\n" +
                 "Tuesday: " + Arrays.toString(schedule[1]) + "\n" +
@@ -165,5 +181,67 @@ public class Doctor extends Person {
                 ", speciality='" + speciality + '\'' +
                 ", consultationCost=" + consultationCost +
                 '}';
+    }
+
+    public MedicalReport makeConsultation(Appointment appointment, Symptom symptom) {
+        Diagnosis diagnosis = makeDiagnosis(symptom);
+        String recommendation = makeRecommendation(diagnosis);
+        Random random = new Random();
+
+        return new MedicalReport(random.nextInt(999),appointment, symptom, diagnosis,
+                recommendation, decideToHospitalize());
+    }
+
+    private Diagnosis makeDiagnosis (Symptom symptom) {
+        switch (symptom) {
+            case FEVER: return Diagnosis.INFLUENZA;
+            case TOOTHACHE: return Diagnosis.PULPIT;
+            case HEADACHE: return Diagnosis.HYPERTENSION;
+            case STOMACHACHE: return Diagnosis.STOMACH_ULCER;
+            case COUGH: return Diagnosis.BRONCHITIS;
+            case RASH: return Diagnosis.CHICKENPOX;
+            default: return Diagnosis.HEALTHY;
+        }
+    }
+
+    private String makeRecommendation (Diagnosis diagnosis){
+        String recommendation;
+        switch (diagnosis) {
+            case INFLUENZA: recommendation = "To take an antiviral remedy for the flu, a fever reducer. " +
+                                            "To drink plenty of fluids.";
+                            break;
+            case PULPIT: recommendation = "To clean and fill of dental canals.";
+                            break;
+            case HYPERTENSION: recommendation = "To take medications to lower blood pressure.";
+                            break;
+            case BRONCHITIS: recommendation = "To breathe moist cool air. To drink plenty of fluids.";
+                            break;
+            case STOMACH_ULCER: recommendation = "To take medications for the healing of the stomach lining." +
+                                                "To follow a diet 2.";
+                            break;
+            case CHICKENPOX: recommendation = "To take shower frequently. To use creams to reduce skin itching." +
+                                                "To avoid contact with other people.";
+                            break;
+            default: recommendation = "To enjoy life.";
+        }
+
+        return recommendation;
+
+    }
+
+    private boolean decideToHospitalize(){
+        Random random = new Random();
+        if (random.nextInt() % 2 == 1) { return true;}
+        return false;
+    }
+
+    @Override
+    public double getRating() {
+        return 0;
+    }
+
+    @Override
+    public String getResponse() {
+        return null;
     }
 }
