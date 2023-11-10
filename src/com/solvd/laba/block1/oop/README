@@ -13,7 +13,8 @@ The "service" package contains classes that represent the departments of the hos
 contact: Registry, Clinic (as a polyclinic), Hospital (as an inpatient hospital), and PayOffice.
 The Department interface presents common operation for different hospital department.
 
-The Evaluation interface contains operation for evaluation of the Doctor, Clinic, Hospital (getRating(), getResponse).
+The Evaluation interface contains operation for evaluation of the Doctor, Clinic, Hospital (getRating()).
+Clinic and hospital are evaluated by patients. Doctor is evaluated by patients and staff manager.
 
 Additional details.
 Registration implements without data, it only includes the week day and time.

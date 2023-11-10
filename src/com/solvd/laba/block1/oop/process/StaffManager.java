@@ -3,6 +3,8 @@ package com.solvd.laba.block1.oop.process;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Nurse;
 
+import java.util.Random;
+
 public class StaffManager {
     private Doctor[] doctors;
     private Nurse[] nurses;
@@ -42,9 +44,9 @@ public class StaffManager {
     public Doctor[] getDoctorsBySpeciality(String speciality) {
         Doctor[] doctorsBySpeciality = new Doctor[doctors.length];
         int j = 0;
-        for (int i = 0; i < doctors.length; i++) {
-            if (doctors[i].getSpeciality().equals(speciality)) {
-                doctorsBySpeciality[j] = doctors[i];
+        for (Doctor doctor : doctors) {
+            if (doctor.getSpeciality().equals(speciality)) {
+                doctorsBySpeciality[j] = doctor;
                 j++;
             }
         }
@@ -52,9 +54,9 @@ public class StaffManager {
     }
 
     public Doctor findDoctor(String lastName) {
-        for (int i = 0; i < doctors.length; i++) {
-            if (doctors[i].getLastName().equals(lastName)) {
-                return doctors[i];
+        for (Doctor doctor : doctors) {
+            if (doctor.getLastName().equals(lastName)) {
+                return doctor;
             }
         }
         return null;
@@ -66,5 +68,10 @@ public class StaffManager {
 
     public void setNurses(Nurse[] nurses) {
         this.nurses = nurses;
+    }
+
+    public static int evaluateDoctor(Doctor doctor) {
+        Random random = new Random();
+        return random.nextInt(11);
     }
 }

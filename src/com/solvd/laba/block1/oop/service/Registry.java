@@ -7,20 +7,21 @@ import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.StaffManager;
 
+import java.util.Arrays;
 import java.util.Random;
 
-public class Registry implements Department{
+public final class Registry implements Department {
 
-    protected StaffManager staff;
-    protected Patient[] patientsInClinic;
-    protected static Appointment[] appointmentsList;
+    private StaffManager staff;
+    private Patient[] patientsInClinic;
+    private static Appointment[] appointmentsList;
 
     private int appointmentsCount;
 
     public Registry(StaffManager staff) {
         this.staff = staff;
         this.patientsInClinic = new Patient[20];
-        this.appointmentsList = new Appointment[40];
+        appointmentsList = new Appointment[40];
         this.appointmentsCount = 0;
     }
 
@@ -37,7 +38,7 @@ public class Registry implements Department{
     }
 
     public void setAppointmentsList(Appointment[] appointmentsList) {
-        this.appointmentsList = appointmentsList;
+        Registry.appointmentsList = appointmentsList;
     }
 
     public int getAppointmentsCount() {
@@ -51,7 +52,7 @@ public class Registry implements Department{
     public boolean registerPatient(Patient patient) {
         int i = 0;
         while (patientsInClinic[i] != null && i < patientsInClinic.length) {
-            if (patientsInClinic[i].equals(patientsInClinic)) {
+            if (patientsInClinic[i].equals(patient)) {
                 System.out.println("This patient has already registered.");
                 return false;
             } else {
@@ -66,6 +67,19 @@ public class Registry implements Department{
             System.out.println("Patient " + patient.getLastName() + " is registered.");
             return true;
         }
+    }
+
+    public static Appointment[] getAppointmentListByDoctor(Doctor doctor) {
+        Appointment[] appointments = new Appointment[appointmentsList.length];
+        int count = 0;
+        for (Appointment appointment : appointmentsList) {
+            if (appointment != null && appointment.getDoctor().equals(doctor)) {
+                appointments[count] = appointment;
+                count++;
+            }
+        }
+
+        return Arrays.copyOf(appointments, count);
     }
 
     public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
@@ -90,7 +104,7 @@ public class Registry implements Department{
 
             doctor.chooseTimeSlot(weekDay, timeSlot);
             System.out.println("Your appointment for " + patient.getLastName() + " is planed. \nAppointment info: \n" +
-                    appointment.toString());
+                    appointment);
             return appointment.getId();
         } else {
             System.out.println("Chosen time slot isn't available.");
@@ -100,18 +114,18 @@ public class Registry implements Department{
     }
 
     private Patient findPatient(String lastName) {
-        for (int i = 0; i < patientsInClinic.length; i++) {
-            if (patientsInClinic[i].getLastName().equals(lastName)) {
-                return patientsInClinic[i];
+        for (Patient patient : patientsInClinic) {
+            if (patient.getLastName().equals(lastName)) {
+                return patient;
             }
         }
         return null;
     }
 
-    public static Appointment findAppointmentById(int id){
-        for (int i = 0; i < appointmentsList.length; i++){
-            if (appointmentsList[i].getId() == id){
-                return appointmentsList[i];
+    public static Appointment findAppointmentById(int id) {
+        for (Appointment appointment : appointmentsList) {
+            if (appointment.getId() == id) {
+                return appointment;
             }
         }
         return null;
@@ -119,9 +133,6 @@ public class Registry implements Department{
 
     @Override
     public boolean isOpened(WeekDay weekDay, int hour) {
-        if (hour >= 8 && hour < 19) {
-            return true;
-        }
-        return false;
+        return hour >= 8 && hour < 19;
     }
 }

@@ -5,17 +5,17 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class ArrayManager {
-    public static int[] createArray(int size){
+    public static int[] createArray(int size) {
         int[] array = new int[size];
         Random r = new Random();
 
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             array[i] = r.nextInt();
         }
         return array;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
         System.out.println("Enter length of array");
         Scanner scan = new Scanner(System.in);
@@ -24,7 +24,7 @@ public class ArrayManager {
 
         System.out.println("Array before sorting: \n" + Arrays.toString(array));
 
-        QuickSort.sortArray(array,0,array.length - 1);
+        QuickSort.sortArray(array, 0, array.length - 1);
         System.out.println("Sorted array: \n" + Arrays.toString(array));
     }
 }

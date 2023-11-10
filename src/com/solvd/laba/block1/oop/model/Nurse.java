@@ -4,7 +4,7 @@ import com.solvd.laba.block1.oop.enums.DayType;
 
 import java.util.Arrays;
 
-public class Nurse extends Person implements Worker{
+public class Nurse extends Person implements Worker {
     private int experienceYears;
 
     private int[] schedule;
@@ -58,7 +58,7 @@ public class Nurse extends Person implements Worker{
 
     }
 
-    private DayType getDayType (int num){
+    private DayType getDayType(int num) {
         if (num == 1) {
             return DayType.WORKDAY;
         }

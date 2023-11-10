@@ -3,7 +3,7 @@ package com.solvd.laba.block1.oop.process;
 import com.solvd.laba.block1.oop.enums.Diagnosis;
 import com.solvd.laba.block1.oop.enums.Symptom;
 
-public class MedicalReport implements Printable{
+public class MedicalReport implements Printable {
     private int reportId;
     private Appointment appointment;
     private Symptom symptom;
@@ -73,12 +73,12 @@ public class MedicalReport implements Printable{
     public void print() {
         System.out.println(
                 "MedicalReport{" +
-                "id=" + reportId +
-                ", symptom=" + symptom +
-                ", diagnosis=" + diagnosis +
-                ", recommendation='" + recommendation + '\'' +
-                ", hospitalization=" + hospitalization +
-                '}'
+                        "id=" + reportId +
+                        ", symptom=" + symptom +
+                        ", diagnosis=" + diagnosis +
+                        ", recommendation='" + recommendation + '\'' +
+                        ", hospitalization=" + hospitalization +
+                        '}'
         );
     }
 }

@@ -4,7 +4,7 @@ import com.solvd.laba.block1.oop.Evaluation;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.model.Patient;
 
-public class Hospital implements Department, Evaluation {
+public final class Hospital implements Department, Evaluation {
     private Patient[] patientsInHospital;
     private int patientsCount = 0;
 
@@ -25,7 +25,8 @@ public class Hospital implements Department, Evaluation {
                 && findPatient(patient.getLastName()).equals(patient)) {
             System.out.println("This patient is in the hospital now.");
             return false;
-        } else if (Clinic.findMedicalReportById(reportId).isHospitalized()) {
+        } else if (Clinic.findMedicalReportById(reportId) != null &&
+                Clinic.findMedicalReportById(reportId).isHospitalized()) {
             patientsInHospital[patientsCount] = patient;
             patientsCount++;
             System.out.println("The patient " + patient.getLastName() + " was admitted to the hospital.");
@@ -54,11 +55,12 @@ public class Hospital implements Department, Evaluation {
 
     @Override
     public double getRating() {
-        return 0;
+        int markSum = 0;
+        for (int i = 0; i < patientsCount; i++) {
+            markSum += patientsInHospital[i].evaluate();
+        }
+        if (patientsCount != 0) return markSum / patientsCount;
+        else return 0;
     }
 
-    @Override
-    public String getResponse() {
-        return null;
-    }
 }

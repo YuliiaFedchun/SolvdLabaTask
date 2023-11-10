@@ -23,7 +23,7 @@ public class HospitalApplication {
         Patient patient1 =
                 new Patient("Mike", "Brown", 30, "05077777777",
                         "Krasnova str, 21", "brown@gmail.com");
-        System.out.println(patient1.toString());
+        System.out.println(patient1);
         Insurance insuranceBrown = new Insurance("AA23456", "Grant", 0.4);
         patient1.setInsurance(insuranceBrown);
 
@@ -31,7 +31,7 @@ public class HospitalApplication {
         Doctor doctor1 =
                 new Doctor("Tom", "Black", 27, "06711111111", "Paladina avenue, 35",
                         "dentist", 100);
-        System.out.println(doctor1.toString());
+        System.out.println(doctor1);
         Nurse nurse1 = new Nurse("Nina", "White", 24, "09000000001", "Popova, 2", 5);
 
         //Schedule: "-1" - doctor doesn't work, "0" - free time slot, "1" - appointment is planed
@@ -59,17 +59,18 @@ public class HospitalApplication {
         Symptom symptom1 = Symptom.COUGH;
         int medicalReport1Id = clinic.admitPatient(appointment1Id, patient1, symptom1);
         Clinic.findMedicalReportById(medicalReport1Id).print();
-/*
+
         //PayOffice
         PayOffice payOffice = new PayOffice();
         Receipt receipt1 = payOffice.acceptPayment(appointment1Id);
         receipt1.print();
 
- */
 
         //Hospital
         Hospital hospital = new Hospital();
         hospital.hospitalizePatient(medicalReport1Id, patient1);
+
+        System.out.println(doctor1.getRating());
 
 
     }

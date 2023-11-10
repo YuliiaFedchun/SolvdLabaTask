@@ -1,8 +1,12 @@
 package com.solvd.laba.block1.oop.model;
 
+import com.solvd.laba.block1.oop.model.payment.Cash;
+import com.solvd.laba.block1.oop.model.payment.CreditCard;
+import com.solvd.laba.block1.oop.model.payment.PaymentByBankDetails;
 import com.solvd.laba.block1.oop.model.payment.PaymentSystem;
 
 import java.util.Objects;
+import java.util.Random;
 
 public class Patient extends Person {
     private String email;
@@ -33,8 +37,17 @@ public class Patient extends Person {
     public void setEmail(String email) {
         this.email = email;
     }
-    public PaymentSystem choosePaymentSystem(){
-        return null;
+
+    public PaymentSystem choosePaymentSystem() {
+        Random random = new Random();
+        int num = random.nextInt(3);
+        if (num == 0) {
+            return new Cash();
+        } else if (num == 1) {
+            return new CreditCard();
+        } else {
+            return new PaymentByBankDetails();
+        }
     }
 
     @Override
@@ -68,5 +81,10 @@ public class Patient extends Person {
                 ", age=" + age +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
+    }
+
+    public int evaluate() {
+        Random random = new Random();
+        return random.nextInt(11);
     }
 }

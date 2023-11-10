@@ -6,6 +6,8 @@ import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.MedicalReport;
+import com.solvd.laba.block1.oop.process.StaffManager;
+import com.solvd.laba.block1.oop.service.Registry;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -144,7 +146,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     @Override
     public void showProfessionalInfo() {
         System.out.println("Speciality: " + speciality + "\n" +
-                            "Cost of consultation: " + consultationCost + "$");
+                "Cost of consultation: " + consultationCost + "$");
     }
 
     @Override
@@ -183,65 +185,86 @@ public class Doctor extends Person implements Worker, Evaluation {
                 '}';
     }
 
-    public MedicalReport makeConsultation(Appointment appointment, Symptom symptom) {
+    public final MedicalReport makeConsultation(Appointment appointment, Symptom symptom) {
         Diagnosis diagnosis = makeDiagnosis(symptom);
         String recommendation = makeRecommendation(diagnosis);
         Random random = new Random();
 
-        return new MedicalReport(random.nextInt(999),appointment, symptom, diagnosis,
+        return new MedicalReport(random.nextInt(999), appointment, symptom, diagnosis,
                 recommendation, decideToHospitalize());
     }
 
-    private Diagnosis makeDiagnosis (Symptom symptom) {
+    private Diagnosis makeDiagnosis(Symptom symptom) {
         switch (symptom) {
-            case FEVER: return Diagnosis.INFLUENZA;
-            case TOOTHACHE: return Diagnosis.PULPIT;
-            case HEADACHE: return Diagnosis.HYPERTENSION;
-            case STOMACHACHE: return Diagnosis.STOMACH_ULCER;
-            case COUGH: return Diagnosis.BRONCHITIS;
-            case RASH: return Diagnosis.CHICKENPOX;
-            default: return Diagnosis.HEALTHY;
+            case FEVER:
+                return Diagnosis.INFLUENZA;
+            case TOOTHACHE:
+                return Diagnosis.PULPIT;
+            case HEADACHE:
+                return Diagnosis.HYPERTENSION;
+            case STOMACHACHE:
+                return Diagnosis.STOMACH_ULCER;
+            case COUGH:
+                return Diagnosis.BRONCHITIS;
+            case RASH:
+                return Diagnosis.CHICKENPOX;
+            default:
+                return Diagnosis.HEALTHY;
         }
     }
 
-    private String makeRecommendation (Diagnosis diagnosis){
+    private String makeRecommendation(Diagnosis diagnosis) {
         String recommendation;
         switch (diagnosis) {
-            case INFLUENZA: recommendation = "To take an antiviral remedy for the flu, a fever reducer. " +
-                                            "To drink plenty of fluids.";
-                            break;
-            case PULPIT: recommendation = "To clean and fill of dental canals.";
-                            break;
-            case HYPERTENSION: recommendation = "To take medications to lower blood pressure.";
-                            break;
-            case BRONCHITIS: recommendation = "To breathe moist cool air. To drink plenty of fluids.";
-                            break;
-            case STOMACH_ULCER: recommendation = "To take medications for the healing of the stomach lining." +
-                                                "To follow a diet 2.";
-                            break;
-            case CHICKENPOX: recommendation = "To take shower frequently. To use creams to reduce skin itching." +
-                                                "To avoid contact with other people.";
-                            break;
-            default: recommendation = "To enjoy life.";
+            case INFLUENZA:
+                recommendation = "To take an antiviral remedy for the flu, a fever reducer. " +
+                        "To drink plenty of fluids.";
+                break;
+            case PULPIT:
+                recommendation = "To clean and fill of dental canals.";
+                break;
+            case HYPERTENSION:
+                recommendation = "To take medications to lower blood pressure.";
+                break;
+            case BRONCHITIS:
+                recommendation = "To breathe moist cool air. To drink plenty of fluids.";
+                break;
+            case STOMACH_ULCER:
+                recommendation = "To take medications for the healing of the stomach lining." +
+                        "To follow a diet 2.";
+                break;
+            case CHICKENPOX:
+                recommendation = "To take shower frequently. To use creams to reduce skin itching." +
+                        "To avoid contact with other people.";
+                break;
+            default:
+                recommendation = "To enjoy life.";
         }
 
         return recommendation;
 
     }
 
-    private boolean decideToHospitalize(){
+    private boolean decideToHospitalize() {
         Random random = new Random();
-        if (random.nextInt() % 2 == 1) { return true;}
-        return false;
+        return random.nextInt() % 2 == 1;
     }
 
     @Override
     public double getRating() {
-        return 0;
+        int staffManagerMark = StaffManager.evaluateDoctor(this);
+        double patientsMark;
+        int sumPatientsMark = 0;
+        Appointment[] appointments = Registry.getAppointmentListByDoctor(this);
+        if (appointments.length == 0) patientsMark = 0;
+        else {
+            for (Appointment appointment : appointments) {
+                sumPatientsMark += appointment.getPatient().evaluate();
+            }
+            patientsMark = sumPatientsMark / appointments.length;
+        }
+
+        return (staffManagerMark + patientsMark) / 2;
     }
 
-    @Override
-    public String getResponse() {
-        return null;
-    }
 }

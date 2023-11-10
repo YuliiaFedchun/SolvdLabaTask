@@ -7,8 +7,8 @@ import com.solvd.laba.block1.oop.model.Patient;
 
 import java.util.Objects;
 
-public class Appointment implements Printable{
-    private int id;
+public class Appointment implements Printable {
+    private final int id;
     private Doctor doctor;
     private Patient patient;
     private WeekDay weekDay;
@@ -88,11 +88,11 @@ public class Appointment implements Printable{
     public void print() {
         System.out.println(
                 "Appointment{" +
-                "id=" + id + "\n" +
-                "doctor=" + doctor.toString() + "\n" +
-                "patient=" + patient.toString() + "\n" +
-                "weekDay=" + weekDay +
-                ", time=" + (9 + timeSlot / 2) + ":" + (3 * (timeSlot % 2)) + "0" + '}'
+                        "id=" + id + "\n" +
+                        "doctor=" + doctor.toString() + "\n" +
+                        "patient=" + patient.toString() + "\n" +
+                        "weekDay=" + weekDay +
+                        ", time=" + (9 + timeSlot / 2) + ":" + (3 * (timeSlot % 2)) + "0" + '}'
         );
     }
 }
