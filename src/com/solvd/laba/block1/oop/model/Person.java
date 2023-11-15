@@ -1,12 +1,19 @@
 package com.solvd.laba.block1.oop.model;
 
 public abstract class Person {
-    String firstName;
-    String lastName;
-    int age;
-    String phoneNumber;
-    String address;
+    protected String firstName;
+    protected String lastName;
+    protected int age;
+    protected String phoneNumber;
+    protected String address;
 
+    public Person(String firstName, String lastName, int age, String phoneNumber, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

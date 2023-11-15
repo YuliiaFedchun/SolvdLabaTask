@@ -1,20 +1,22 @@
 package com.solvd.laba.block1.oop.model;
 
-import com.solvd.laba.block1.oop.Evaluation;
+import com.solvd.laba.block1.oop.interfaces.Evaluation;
 import com.solvd.laba.block1.oop.enums.Diagnosis;
 import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
+import com.solvd.laba.block1.oop.interfaces.Worker;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.MedicalReport;
 import com.solvd.laba.block1.oop.process.StaffManager;
 import com.solvd.laba.block1.oop.service.Registry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 
-import static com.solvd.laba.block1.oop.enums.Symptom.*;
-import static com.solvd.laba.block1.oop.enums.Symptom.FEVER;
 
 public class Doctor extends Person implements Worker, Evaluation {
 
@@ -22,13 +24,11 @@ public class Doctor extends Person implements Worker, Evaluation {
     private int[][] schedule;
     private int consultationCost;
 
+    private static final Logger LOGGER = LogManager.getLogger(Doctor.class.getName());
+
     public Doctor(String firstName, String lastName, int age, String phoneNumber, String address,
                   String speciality, int consultationCost) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        super(firstName, lastName, age, phoneNumber, address);
         this.speciality = speciality;
         this.consultationCost = consultationCost;
         this.schedule = new int[7][10];
@@ -60,13 +60,13 @@ public class Doctor extends Person implements Worker, Evaluation {
 
     @Override
     public void showContactInfo() {
-        System.out.println("Address: " + this.address + "\n"
+        LOGGER.info("Address: " + this.address + "\n"
                 + "Phone number: " + this.phoneNumber);
     }
 
     public boolean isTimeSlotFree(WeekDay weekDay, int timeSlot) {
         if (timeSlot >= 20) {
-            System.out.println("Incorrect time slot.");
+            LOGGER.warn("Incorrect time slot.");
             return false;
         }
 
@@ -137,7 +137,7 @@ public class Doctor extends Person implements Worker, Evaluation {
             }
 
         } else {
-            System.out.println("The time slot isn't available.");
+            LOGGER.warn("The time slot isn't available.");
             return false;
         }
         return false;
@@ -145,13 +145,13 @@ public class Doctor extends Person implements Worker, Evaluation {
 
     @Override
     public void showProfessionalInfo() {
-        System.out.println("Speciality: " + speciality + "\n" +
+        LOGGER.info("Speciality: " + speciality + "\n" +
                 "Cost of consultation: " + consultationCost + "$");
     }
 
     @Override
     public void showSchedule() {
-        System.out.println("Monday: " + Arrays.toString(schedule[0]) + "\n" +
+        LOGGER.info("Monday: " + Arrays.toString(schedule[0]) + "\n" +
                 "Tuesday: " + Arrays.toString(schedule[1]) + "\n" +
                 "Wednesday: " + Arrays.toString(schedule[2]) + "\n" +
                 "Thursday: " + Arrays.toString(schedule[3]) + "\n" +
@@ -251,7 +251,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     }
 
     @Override
-    public double getRating() {
+    public double getRating() throws DoctorIsNotFound {
         int staffManagerMark = StaffManager.evaluateDoctor(this);
         double patientsMark;
         int sumPatientsMark = 0;

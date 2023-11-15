@@ -2,6 +2,10 @@ package com.solvd.laba.block1.oop.process;
 
 import com.solvd.laba.block1.oop.enums.Diagnosis;
 import com.solvd.laba.block1.oop.enums.Symptom;
+import com.solvd.laba.block1.oop.interfaces.Printable;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class MedicalReport implements Printable {
     private int reportId;
@@ -10,6 +14,8 @@ public class MedicalReport implements Printable {
     private Diagnosis diagnosis;
     private String recommendation;
     private boolean hospitalization;
+
+    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class.getName());
 
     public MedicalReport(int id, Appointment appointment, Symptom symptom, Diagnosis diagnosis, String recommendation,
                          boolean hospitalization) {
@@ -71,7 +77,7 @@ public class MedicalReport implements Printable {
 
     @Override
     public void print() {
-        System.out.println(
+        LOGGER.info(
                 "MedicalReport{" +
                         "id=" + reportId +
                         ", symptom=" + symptom +
