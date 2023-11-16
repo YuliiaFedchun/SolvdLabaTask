@@ -59,16 +59,18 @@ public final class Clinic implements Department, Evaluation {
     }
 
     public static MedicalReport findMedicalReportById(int id) throws IllegalMedicalReportId {
-        try {
-            for (MedicalReport medicalReport : medicalReportList) {
-                if (medicalReport.getReportId() == id) {
-                    return medicalReport;
-                }
+        MedicalReport foundReport = null;
+        for (MedicalReport medicalReport : medicalReportList) {
+            if (medicalReport.getReportId() == id) {
+                foundReport = medicalReport;
+                return foundReport;
             }
-        } catch (Exception e) {
+        }
+        if (foundReport == null) {
             throw new IllegalMedicalReportId("Medical report id " + id + " is wrong.");
         }
-        return null;
+
+        return foundReport;
     }
 
     @Override

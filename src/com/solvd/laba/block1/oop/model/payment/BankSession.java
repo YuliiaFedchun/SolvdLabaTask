@@ -1,5 +1,6 @@
 package com.solvd.laba.block1.oop.model.payment;
 
+import com.solvd.laba.block1.oop.exception.BankIsNotAvailable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +24,7 @@ public class BankSession implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() throws BankIsNotAvailable {
         LOGGER.info("Bank session is closed.");
     }
 }

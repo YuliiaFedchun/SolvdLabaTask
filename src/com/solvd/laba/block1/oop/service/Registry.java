@@ -96,7 +96,6 @@ public final class Registry implements Department {
 
         if (findPatient(patient.getLastName()) == null) {
             LOGGER.warn("You should register patient " + patient.getLastName() + "first");
-            throw new PatientIsNotFound("You should register patient " + patient.getLastName() + "first");
         }
 
         if (staff.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
@@ -120,31 +119,31 @@ public final class Registry implements Department {
     }
 
     private Patient findPatient(String lastName) throws PatientIsNotFound {
-        try {
-            for (Patient patient : patientsInClinic) {
-                if (patient.getLastName().equals(lastName)) {
-                    return patient;
-                }
+        Patient foundPatient = null;
+        for (Patient patient : patientsInClinic) {
+            if (patient.getLastName().equals(lastName)) {
+                foundPatient = patient;
+                return patient;
             }
-        } catch (Exception e) {
-            LOGGER.error("You should register patient " + lastName + " first", e);
+        }
+        if (foundPatient == null) {
             throw new PatientIsNotFound("You should register patient " + lastName + " first");
         }
-        return null;
+        return foundPatient;
     }
 
     public static Appointment findAppointmentById(int id) throws IllegalAppointmentId {
-        try {
-            for (Appointment appointment : appointmentsList) {
-                if (appointment.getId() == id) {
-                    return appointment;
-                }
+        Appointment foundAppointment = null;
+        for (Appointment appointment : appointmentsList) {
+            if (appointment.getId() == id) {
+                foundAppointment = appointment;
+                return foundAppointment;
             }
-        } catch (Exception e) {
-            LOGGER.error("Appointment id " + id + " is wrong", e);
+        }
+        if (foundAppointment == null) {
             throw new IllegalAppointmentId("Appointment id " + id + " is wrong");
         }
-        return null;
+        return foundAppointment;
     }
 
     @Override

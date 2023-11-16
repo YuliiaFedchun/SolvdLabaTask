@@ -13,10 +13,10 @@ public class PaymentByBankDetails implements PaymentSystem {
     public void pay(double cost) throws BankIsNotAvailable {
         String iban = PayOffice.getBankDetails();
         try(BankSession bankSession = new Bank().getBankSession()) {
-            LOGGER.info(cost + "$ was payed on the bank account " + iban);
-        } catch (Exception e) {
+            LOGGER.info(cost + "$ was payed on the bank account " + iban + ". Tranzaction id: "
+                    + bankSession.getId());
+        } catch (BankIsNotAvailable e) {
             LOGGER.error("Bank isn't response. Try later.", e);
-            throw new BankIsNotAvailable("Bank isn't response. Try later.");
         }
     }
 

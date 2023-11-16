@@ -61,17 +61,19 @@ public class StaffManager {
     }
 
     public static Doctor findDoctor(String lastName) throws DoctorIsNotFound {
-        try {
-            for (Doctor doctor : doctors) {
-                if (doctor.getLastName().equals(lastName)) {
-                    return doctor;
-                }
+        Doctor foundDoc = null;
+        for (Doctor doctor : doctors) {
+            if (doctor.getLastName().equals(lastName)) {
+                foundDoc = doctor;
+                return foundDoc;
             }
-        } catch (Exception e) {
-            LOGGER.error("Doctor " + lastName + " doesn't work here.", e);
+        }
+
+        if (foundDoc == null) {
             throw new DoctorIsNotFound("Doctor " + lastName + " doesn't work here.");
         }
-        return null;
+
+        return foundDoc;
     }
 
     public Nurse[] getNurses() {
@@ -87,9 +89,9 @@ public class StaffManager {
             findDoctor(doctor.getLastName());
             Random random = new Random();
             return random.nextInt(11);
-        } catch (Exception e) {
+        } catch (DoctorIsNotFound e) {
             LOGGER.error("Doctor " + doctor.getLastName() + " doesn't work here.", e);
-            throw new DoctorIsNotFound("Doctor " + doctor.getLastName() + " doesn't work here.");
+            return 0;
         }
     }
 }

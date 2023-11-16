@@ -11,10 +11,9 @@ public class CreditCard implements PaymentSystem {
     @Override
     public void pay(double cost) throws BankIsNotAvailable {
         try(BankSession bankSession = new Bank().getBankSession()) {
-            LOGGER.info(cost + "$ was payed by credit card.");
-        } catch (Exception e) {
+            LOGGER.info(cost + "$ was payed by credit card. Tranzaction id: " + bankSession.getId());
+        } catch (BankIsNotAvailable e) {
             LOGGER.error("Bank isn't response. Try later.", e);
-            throw new BankIsNotAvailable("Bank isn't response. Try later.");
         }
     }
 }
