@@ -1,24 +1,23 @@
 package com.solvd.laba.block1.oop.model;
 
-import com.solvd.laba.block1.oop.model.payment.Cash;
-import com.solvd.laba.block1.oop.model.payment.CreditCard;
-import com.solvd.laba.block1.oop.model.payment.PaymentByBankDetails;
-import com.solvd.laba.block1.oop.model.payment.PaymentSystem;
+import com.solvd.laba.block1.oop.interfaces.PaymentSystem;
+import com.solvd.laba.block1.oop.model.payment.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 import java.util.Random;
+
 
 public class Patient extends Person {
     private String email;
     private Insurance insurance;
     private PaymentSystem paymentSystem;
 
+    private static final Logger LOGGER = LogManager.getLogger(Patient.class.getName());
+
     public Patient(String firstName, String lastName, int age, String phoneNumber, String address, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        super(firstName, lastName, age, phoneNumber, address);
         this.email = email;
     }
 
@@ -52,7 +51,7 @@ public class Patient extends Person {
 
     @Override
     public void showContactInfo() {
-        System.out.println("Address: " + this.address + "\n"
+        LOGGER.info("Address: " + this.address + "\n"
                 + "Phone number: " + this.phoneNumber + "\n"
                 + "Email: " + this.email + "\n");
 

@@ -2,18 +2,24 @@ package com.solvd.laba.block1.oop.service;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.model.payment.PaymentSystem;
+import com.solvd.laba.block1.oop.exception.BankIsNotAvailable;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentId;
+import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.Receipt;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
+
 public final class PayOffice implements Department {
     private Receipt[] payments;
-
     private int receiptsCounter = 0;
-
+    private static final int maxReceiptCount = 20;
     private static final String IBAN;
+
+    private static final Logger LOGGER = LogManager.getLogger(PayOffice.class.getName());
 
     static {
         StringBuilder prop = new StringBuilder("UA");
@@ -25,10 +31,10 @@ public final class PayOffice implements Department {
     }
 
     public PayOffice() {
-        this.payments = new Receipt[20];
+        this.payments = new Receipt[maxReceiptCount];
     }
 
-    public Receipt acceptPayment(int appointmentId) {
+    public Receipt acceptPayment(int appointmentId) throws IllegalAppointmentId, BankIsNotAvailable {
         Receipt receipt = new Receipt(null, 0.0);
 
         Appointment appointment = Registry.findAppointmentById(appointmentId);
@@ -38,7 +44,7 @@ public final class PayOffice implements Department {
             double costForPatient = appointment.getDoctor().getConsultationCost() *
                     appointment.getPatient().getInsurance().getFranchise();
 
-            System.out.println("Mr./Mrs. " + appointment.getPatient().getLastName() + ", you should pay: "
+            LOGGER.info("Mr./Mrs. " + appointment.getPatient().getLastName() + ", you should pay: "
                     + costForPatient + "$");
 
             appointment.getPatient().choosePaymentSystem().pay(costForPatient);

@@ -1,10 +1,16 @@
 package com.solvd.laba.block1.oop.process;
 
+import com.solvd.laba.block1.oop.interfaces.Printable;
 import com.solvd.laba.block1.oop.model.Patient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class Receipt implements Printable {
     private Patient patient;
     private double cost;
+
+    private static final Logger LOGGER = LogManager.getLogger(Receipt.class.getName());
 
     public Receipt(Patient patient, double cost) {
         this.patient = patient;
@@ -29,7 +35,7 @@ public class Receipt implements Printable {
 
     @Override
     public void print() {
-        System.out.println("Receipt{" +
+        LOGGER.info("Receipt{" +
                 "patient=" + patient.getFirstName() + " " + patient.getLastName() +
                 ", cost=" + cost + "$}");
     }

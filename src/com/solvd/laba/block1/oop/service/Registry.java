@@ -2,10 +2,16 @@ package com.solvd.laba.block1.oop.service;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentId;
+import com.solvd.laba.block1.oop.exception.PatientIsNotFound;
+import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.StaffManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -15,13 +21,16 @@ public final class Registry implements Department {
     private StaffManager staff;
     private Patient[] patientsInClinic;
     private static Appointment[] appointmentsList;
-
+    private final int clinicCapacity = 20;
+    private final int maxAppointmentsCount = 40;
     private int appointmentsCount;
+
+    private static final Logger LOGGER = LogManager.getLogger(Registry.class.getName());
 
     public Registry(StaffManager staff) {
         this.staff = staff;
-        this.patientsInClinic = new Patient[20];
-        appointmentsList = new Appointment[40];
+        this.patientsInClinic = new Patient[clinicCapacity];
+        appointmentsList = new Appointment[maxAppointmentsCount];
         this.appointmentsCount = 0;
     }
 
@@ -53,18 +62,18 @@ public final class Registry implements Department {
         int i = 0;
         while (patientsInClinic[i] != null && i < patientsInClinic.length) {
             if (patientsInClinic[i].equals(patient)) {
-                System.out.println("This patient has already registered.");
+                LOGGER.warn("This patient has already registered.");
                 return false;
             } else {
                 i++;
             }
         }
         if (i == patientsInClinic.length) {
-            System.out.println("We can't register a new patient.");
+            LOGGER.warn("We can't register a new patient.");
             return false;
         } else {
             patientsInClinic[i] = patient;
-            System.out.println("Patient " + patient.getLastName() + " is registered.");
+            LOGGER.info("Patient " + patient.getLastName() + " is registered.");
             return true;
         }
     }
@@ -82,15 +91,12 @@ public final class Registry implements Department {
         return Arrays.copyOf(appointments, count);
     }
 
-    public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
-        if (staff.findDoctor(doctor.getLastName()) == null) {
-            System.out.println("This doctor doesn't work here.");
-            return 0;
-        }
+    public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot)
+            throws DoctorIsNotFound, PatientIsNotFound {
 
         if (findPatient(patient.getLastName()) == null) {
-            System.out.println("You should register this patient first");
-            return 0;
+            LOGGER.warn("You should register patient " + patient.getLastName() + "first");
+            throw new PatientIsNotFound("You should register patient " + patient.getLastName() + "first");
         }
 
         if (staff.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
@@ -103,30 +109,40 @@ public final class Registry implements Department {
             appointment.setStatus(AppointmentStatus.PLANED);
 
             doctor.chooseTimeSlot(weekDay, timeSlot);
-            System.out.println("Your appointment for " + patient.getLastName() + " is planed. \nAppointment info: \n" +
+            LOGGER.info("Your appointment for " + patient.getLastName() + " is planed. \nAppointment info: \n" +
                     appointment);
             return appointment.getId();
         } else {
-            System.out.println("Chosen time slot isn't available.");
+            LOGGER.warn("Chosen time slot isn't available.");
         }
 
         return 0;
     }
 
-    private Patient findPatient(String lastName) {
-        for (Patient patient : patientsInClinic) {
-            if (patient.getLastName().equals(lastName)) {
-                return patient;
+    private Patient findPatient(String lastName) throws PatientIsNotFound {
+        try {
+            for (Patient patient : patientsInClinic) {
+                if (patient.getLastName().equals(lastName)) {
+                    return patient;
+                }
             }
+        } catch (Exception e) {
+            LOGGER.error("You should register patient " + lastName + " first", e);
+            throw new PatientIsNotFound("You should register patient " + lastName + " first");
         }
         return null;
     }
 
-    public static Appointment findAppointmentById(int id) {
-        for (Appointment appointment : appointmentsList) {
-            if (appointment.getId() == id) {
-                return appointment;
+    public static Appointment findAppointmentById(int id) throws IllegalAppointmentId {
+        try {
+            for (Appointment appointment : appointmentsList) {
+                if (appointment.getId() == id) {
+                    return appointment;
+                }
             }
+        } catch (Exception e) {
+            LOGGER.error("Appointment id " + id + " is wrong", e);
+            throw new IllegalAppointmentId("Appointment id " + id + " is wrong");
         }
         return null;
     }

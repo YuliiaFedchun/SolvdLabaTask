@@ -2,10 +2,14 @@ package com.solvd.laba.block1.oop.process;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
+import com.solvd.laba.block1.oop.interfaces.Printable;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
+
 
 public class Appointment implements Printable {
     private final int id;
@@ -14,6 +18,8 @@ public class Appointment implements Printable {
     private WeekDay weekDay;
     private int timeSlot;
     private AppointmentStatus appointmentStatus;
+
+    private static final Logger LOGGER = LogManager.getLogger(Appointment.class.getName());
 
     public Appointment(int id, Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
         this.id = id;
@@ -86,7 +92,7 @@ public class Appointment implements Printable {
 
     @Override
     public void print() {
-        System.out.println(
+        LOGGER.info(
                 "Appointment{" +
                         "id=" + id + "\n" +
                         "doctor=" + doctor.toString() + "\n" +

@@ -1,20 +1,18 @@
 package com.solvd.laba.block1.oop.model;
 
 import com.solvd.laba.block1.oop.enums.DayType;
-
-import java.util.Arrays;
+import com.solvd.laba.block1.oop.interfaces.Worker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Nurse extends Person implements Worker {
     private int experienceYears;
-
     private int[] schedule;
 
+    private static final Logger LOGGER = LogManager.getLogger(Nurse.class.getName());
+
     public Nurse(String firstName, String lastName, int age, String phoneNumber, String address, int experienceYears) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
+        super(firstName, lastName, age, phoneNumber, address);
         this.experienceYears = experienceYears;
         this.schedule = new int[7];
     }
@@ -37,13 +35,13 @@ public class Nurse extends Person implements Worker {
 
     @Override
     public void showContactInfo() {
-        System.out.println("Address: " + this.address + "\n"
+        LOGGER.info("Address: " + this.address + "\n"
                 + "Phone number: " + this.phoneNumber);
     }
 
     @Override
     public void showProfessionalInfo() {
-        System.out.println("Years of work: " + experienceYears);
+        LOGGER.info("Years of work: " + experienceYears);
     }
 
     @Override
