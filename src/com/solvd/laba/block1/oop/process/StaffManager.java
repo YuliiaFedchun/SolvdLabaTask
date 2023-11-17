@@ -1,9 +1,8 @@
 package com.solvd.laba.block1.oop.process;
 
-import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Nurse;
-import com.solvd.laba.block1.oop.model.payment.BankSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -60,7 +59,7 @@ public class StaffManager {
         return doctorsBySpeciality;
     }
 
-    public static Doctor findDoctor(String lastName) throws DoctorIsNotFound {
+    public static Doctor findDoctor(String lastName) throws DoctorIsNotFoundException {
         Doctor foundDoc = null;
         for (Doctor doctor : doctors) {
             if (doctor.getLastName().equals(lastName)) {
@@ -70,7 +69,7 @@ public class StaffManager {
         }
 
         if (foundDoc == null) {
-            throw new DoctorIsNotFound("Doctor " + lastName + " doesn't work here.");
+            throw new DoctorIsNotFoundException("Doctor " + lastName + " doesn't work here.");
         }
 
         return foundDoc;
@@ -84,13 +83,13 @@ public class StaffManager {
         this.nurses = nurses;
     }
 
-    public static int evaluateDoctor(Doctor doctor) throws DoctorIsNotFound {
+    public static int evaluateDoctor(Doctor doctor) throws DoctorIsNotFoundException {
         try {
             findDoctor(doctor.getLastName());
             Random random = new Random();
             return random.nextInt(11);
-        } catch (DoctorIsNotFound e) {
-            LOGGER.error("Doctor " + doctor.getLastName() + " doesn't work here.", e);
+        } catch (DoctorIsNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
             return 0;
         }
     }

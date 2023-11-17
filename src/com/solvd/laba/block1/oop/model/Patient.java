@@ -1,7 +1,9 @@
 package com.solvd.laba.block1.oop.model;
 
 import com.solvd.laba.block1.oop.interfaces.PaymentSystem;
-import com.solvd.laba.block1.oop.model.payment.*;
+import com.solvd.laba.block1.oop.model.payment.Cash;
+import com.solvd.laba.block1.oop.model.payment.CreditCard;
+import com.solvd.laba.block1.oop.model.payment.PaymentByBankDetails;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

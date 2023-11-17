@@ -2,9 +2,9 @@ package com.solvd.laba.block1.oop.service;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
-import com.solvd.laba.block1.oop.exception.IllegalAppointmentId;
-import com.solvd.laba.block1.oop.exception.PatientIsNotFound;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
+import com.solvd.laba.block1.oop.exception.PatientIsNotFoundException;
 import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
@@ -92,10 +92,12 @@ public final class Registry implements Department {
     }
 
     public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot)
-            throws DoctorIsNotFound, PatientIsNotFound {
+            throws DoctorIsNotFoundException, PatientIsNotFoundException {
 
-        if (findPatient(patient.getLastName()) == null) {
-            LOGGER.warn("You should register patient " + patient.getLastName() + "first");
+        try {
+            findPatient(patient.getLastName());
+        } catch (PatientIsNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
         }
 
         if (staff.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
@@ -118,7 +120,7 @@ public final class Registry implements Department {
         return 0;
     }
 
-    private Patient findPatient(String lastName) throws PatientIsNotFound {
+    private Patient findPatient(String lastName) throws PatientIsNotFoundException {
         Patient foundPatient = null;
         for (Patient patient : patientsInClinic) {
             if (patient.getLastName().equals(lastName)) {
@@ -127,12 +129,12 @@ public final class Registry implements Department {
             }
         }
         if (foundPatient == null) {
-            throw new PatientIsNotFound("You should register patient " + lastName + " first");
+            throw new PatientIsNotFoundException("You should register patient " + lastName + " first");
         }
         return foundPatient;
     }
 
-    public static Appointment findAppointmentById(int id) throws IllegalAppointmentId {
+    public static Appointment findAppointmentById(int id) throws IllegalAppointmentIdException {
         Appointment foundAppointment = null;
         for (Appointment appointment : appointmentsList) {
             if (appointment.getId() == id) {
@@ -141,7 +143,7 @@ public final class Registry implements Department {
             }
         }
         if (foundAppointment == null) {
-            throw new IllegalAppointmentId("Appointment id " + id + " is wrong");
+            throw new IllegalAppointmentIdException("Appointment id " + id + " is wrong");
         }
         return foundAppointment;
     }

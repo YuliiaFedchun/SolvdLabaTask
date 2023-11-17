@@ -2,8 +2,8 @@ package com.solvd.laba.block1.oop.service;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.exception.BankIsNotAvailable;
-import com.solvd.laba.block1.oop.exception.IllegalAppointmentId;
+import com.solvd.laba.block1.oop.exception.BankIsNotAvailableException;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
 import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.Receipt;
@@ -16,7 +16,7 @@ import java.util.Random;
 public final class PayOffice implements Department {
     private Receipt[] payments;
     private int receiptsCounter = 0;
-    private static final int maxReceiptCount = 20;
+    private final int maxReceiptCount = 20;
     private static final String IBAN;
 
     private static final Logger LOGGER = LogManager.getLogger(PayOffice.class.getName());
@@ -34,10 +34,15 @@ public final class PayOffice implements Department {
         this.payments = new Receipt[maxReceiptCount];
     }
 
-    public Receipt acceptPayment(int appointmentId) throws IllegalAppointmentId, BankIsNotAvailable {
+    public Receipt acceptPayment(int appointmentId) throws IllegalAppointmentIdException, BankIsNotAvailableException {
         Receipt receipt = new Receipt(null, 0.0);
 
-        Appointment appointment = Registry.findAppointmentById(appointmentId);
+        Appointment appointment = null;
+        try {
+            appointment = Registry.findAppointmentById(appointmentId);
+        } catch (IllegalAppointmentIdException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
 
         if (appointment != null && appointment.getStatus().equals(AppointmentStatus.DONE)) {
 
