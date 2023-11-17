@@ -10,13 +10,13 @@ import com.solvd.laba.block1.oop.process.Receipt;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 
 public final class PayOffice implements Department {
-    private Receipt[] payments;
-    private int receiptsCounter = 0;
-    private final int maxReceiptCount = 20;
+    private Set<Receipt> payments;
     private static final String IBAN;
 
     private static final Logger LOGGER = LogManager.getLogger(PayOffice.class);
@@ -31,7 +31,7 @@ public final class PayOffice implements Department {
     }
 
     public PayOffice() {
-        this.payments = new Receipt[maxReceiptCount];
+        this.payments = new HashSet<>();
     }
 
     public Receipt acceptPayment(int appointmentId) throws IllegalAppointmentIdException, BankIsNotAvailableException {
@@ -64,9 +64,7 @@ public final class PayOffice implements Department {
     }
 
     private boolean addReceipt(Receipt receipt) {
-        payments[receiptsCounter] = receipt;
-        receiptsCounter++;
-        return true;
+        return payments.add(receipt);
     }
 
     public static String getBankDetails() {

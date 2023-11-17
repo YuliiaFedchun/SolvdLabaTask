@@ -1,59 +1,51 @@
 package com.solvd.laba.block1.oop.process;
 
+import com.solvd.laba.block1.oop.list.MyLinkedList;
 import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Nurse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
 public class StaffManager {
-    private static Doctor[] doctors;
-    private static Nurse[] nurses;
+    private static List<Doctor> doctors;
+    private static List<Nurse> nurses;
 
     private static final Logger LOGGER = LogManager.getLogger(StaffManager.class);
 
-    public StaffManager(Doctor[] doctors, Nurse[] nurses) {
+    public StaffManager(List<Doctor> doctors, List<Nurse> nurses) {
         this.doctors = doctors;
         this.nurses = nurses;
     }
 
     public boolean addDoctor(Doctor doctor) {
-        int i = 0;
-        while (doctors[i] != null && i < doctors.length) {
-            if (doctors[i].equals(doctor)) {
-                LOGGER.warn("This doctor has already worked.");
-                return false;
-            } else {
-                i++;
-            }
-        }
-        if (i == doctors.length) {
-            LOGGER.info("We don't need a new doctor.");
+        if (doctors.indexOf(doctor) != -1) {
+            LOGGER.warn("This doctor has already worked here.");
             return false;
         } else {
-            doctors[i] = doctor;
+            doctors.add(doctor);
             return true;
         }
     }
 
-    public Doctor[] getDoctors() {
+    public List<Doctor> getDoctors() {
         return doctors;
     }
 
-    public void setDoctors(Doctor[] doctors) {
+    public void setDoctors(List<Doctor> doctors) {
         this.doctors = doctors;
     }
 
-    public Doctor[] getDoctorsBySpeciality(String speciality) {
-        Doctor[] doctorsBySpeciality = new Doctor[doctors.length];
-        int j = 0;
+    public List<Doctor> getDoctorsBySpeciality(String speciality) {
+        List<Doctor> doctorsBySpeciality = new ArrayList<>();
         for (Doctor doctor : doctors) {
             if (doctor.getSpeciality().equals(speciality)) {
-                doctorsBySpeciality[j] = doctor;
-                j++;
+                doctorsBySpeciality.add(doctor);
             }
         }
         return doctorsBySpeciality;
@@ -68,11 +60,11 @@ public class StaffManager {
         throw new DoctorIsNotFoundException("Doctor " + lastName + " doesn't work here.");
     }
 
-    public Nurse[] getNurses() {
+    public List<Nurse> getNurses() {
         return nurses;
     }
 
-    public void setNurses(Nurse[] nurses) {
+    public void setNurses(List<Nurse> nurses) {
         this.nurses = nurses;
     }
 

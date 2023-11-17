@@ -5,26 +5,30 @@ import com.solvd.laba.block1.oop.exception.HospitalIsFullException;
 import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
 import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.interfaces.Evaluation;
+import com.solvd.laba.block1.oop.list.MyLinkedList;
 import com.solvd.laba.block1.oop.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public final class Hospital implements Department, Evaluation {
-    private Patient[] patientsInHospital;
+    private MyLinkedList<Patient> patientsInHospital;
     private int patientsCount = 0;
     private final int hospitalCapacity = 20;
 
     private static final Logger LOGGER = LogManager.getLogger(Hospital.class);
 
     public Hospital() {
-        this.patientsInHospital = new Patient[hospitalCapacity];
+        this.patientsInHospital = new MyLinkedList<>();
     }
 
-    public Patient[] getPatientsInHospital() {
+    public MyLinkedList<Patient> getPatientsInHospital() {
         return patientsInHospital;
     }
 
-    public void setPatientsInHospital(Patient[] patientsInHospital) {
+    public void setPatientsInHospital(MyLinkedList<Patient> patientsInHospital) {
         this.patientsInHospital = patientsInHospital;
     }
 
@@ -41,8 +45,7 @@ public final class Hospital implements Department, Evaluation {
             LOGGER.info("This patient is in the hospital now.");
             return false;
         } else if (Clinic.findMedicalReportById(reportId).isHospitalized()) {
-            patientsInHospital[patientsCount] = patient;
-            patientsCount++;
+            patientsInHospital.add(patient);
             LOGGER.info("The patient " + patient.getLastName() + " was admitted to the hospital.");
             return true;
         } else {
@@ -59,10 +62,10 @@ public final class Hospital implements Department, Evaluation {
     }
 
     public Patient findPatient(String lastName) {
-        if (patientsCount > 0) {
-            for (int i = 0; i <= patientsCount; i++) {
-                if (patientsInHospital[i].getLastName().equals(lastName)) {
-                    return patientsInHospital[i];
+        if (patientsInHospital.size() != 0) {
+            for (Patient patient : patientsInHospital) {
+                if (patient.getLastName().equals(lastName)) {
+                    return patient;
                 }
             }
         }
@@ -77,11 +80,12 @@ public final class Hospital implements Department, Evaluation {
     @Override
     public double getRating() {
         int markSum = 0;
-        for (int i = 0; i < patientsCount; i++) {
-            markSum += patientsInHospital[i].evaluate();
-        }
-        if (patientsCount != 0) return markSum / patientsCount;
-        else return 0;
+        if (patientsInHospital.size() != 0) {
+            for (Patient patient : patientsInHospital) {
+                markSum += patient.evaluate();
+            }
+            return markSum / patientsInHospital.size();
+        } else return 0;
     }
 
 }

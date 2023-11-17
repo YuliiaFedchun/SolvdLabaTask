@@ -1,7 +1,5 @@
 package com.solvd.laba.block1.oop.model;
 
-import com.solvd.laba.block1.oop.enums.Diagnosis;
-import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.interfaces.Evaluation;
@@ -13,9 +11,7 @@ import com.solvd.laba.block1.oop.service.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 
 public class Doctor extends Person implements Worker, Evaluation {
@@ -23,6 +19,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     private String speciality;
     private int[][] schedule;
     private int consultationCost;
+    private Map<String, String> medBook;
 
     private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
@@ -56,6 +53,14 @@ public class Doctor extends Person implements Worker, Evaluation {
 
     public void setSchedule(int[][] schedule) {
         this.schedule = schedule;
+    }
+
+    public Map<String, String> getMedBook() {
+        return medBook;
+    }
+
+    public void setMedBook(Map<String, String> medBook) {
+        this.medBook = medBook;
     }
 
     @Override
@@ -185,8 +190,8 @@ public class Doctor extends Person implements Worker, Evaluation {
                 '}';
     }
 
-    public final MedicalReport makeConsultation(Appointment appointment, Symptom symptom) {
-        Diagnosis diagnosis = makeDiagnosis(symptom);
+    public final MedicalReport makeConsultation(Appointment appointment, String symptom) {
+        String diagnosis = makeDiagnosis(symptom);
         String recommendation = makeRecommendation(diagnosis);
         Random random = new Random();
 
@@ -194,46 +199,35 @@ public class Doctor extends Person implements Worker, Evaluation {
                 recommendation, decideToHospitalize());
     }
 
-    private Diagnosis makeDiagnosis(Symptom symptom) {
-        switch (symptom) {
-            case FEVER:
-                return Diagnosis.INFLUENZA;
-            case TOOTHACHE:
-                return Diagnosis.PULPIT;
-            case HEADACHE:
-                return Diagnosis.HYPERTENSION;
-            case STOMACHACHE:
-                return Diagnosis.STOMACH_ULCER;
-            case COUGH:
-                return Diagnosis.BRONCHITIS;
-            case RASH:
-                return Diagnosis.CHICKENPOX;
-            default:
-                return Diagnosis.HEALTHY;
+    private String makeDiagnosis(String symptom) {
+        if (medBook.containsKey(symptom)) {
+            return medBook.get(symptom);
         }
+        return "Healthy";
+
     }
 
-    private String makeRecommendation(Diagnosis diagnosis) {
+    private String makeRecommendation(String diagnosis) {
         String recommendation;
         switch (diagnosis) {
-            case INFLUENZA:
+            case "Influenza":
                 recommendation = "To take an antiviral remedy for the flu, a fever reducer. " +
                         "To drink plenty of fluids.";
                 break;
-            case PULPIT:
+            case "Pulpit":
                 recommendation = "To clean and fill of dental canals.";
                 break;
-            case HYPERTENSION:
+            case "Hypertension":
                 recommendation = "To take medications to lower blood pressure.";
                 break;
-            case BRONCHITIS:
+            case "Bronchitis":
                 recommendation = "To breathe moist cool air. To drink plenty of fluids.";
                 break;
-            case STOMACH_ULCER:
+            case "Stomach ulcer":
                 recommendation = "To take medications for the healing of the stomach lining." +
                         "To follow a diet 2.";
                 break;
-            case CHICKENPOX:
+            case "Chickenpox":
                 recommendation = "To take shower frequently. To use creams to reduce skin itching." +
                         "To avoid contact with other people.";
                 break;
@@ -247,7 +241,7 @@ public class Doctor extends Person implements Worker, Evaluation {
 
     private boolean decideToHospitalize() {
         Random random = new Random();
-        return random.nextInt() % 2 == 1;
+        return random.nextBoolean();
     }
 
     @Override
@@ -255,13 +249,13 @@ public class Doctor extends Person implements Worker, Evaluation {
         int staffManagerMark = StaffManager.evaluateDoctor(this);
         double patientsMark;
         int sumPatientsMark = 0;
-        Appointment[] appointments = Registry.getAppointmentListByDoctor(this);
-        if (appointments.length == 0) patientsMark = 0;
+        List<Appointment> appointments = Registry.getAppointmentListByDoctor(this);
+        if (appointments.size() == 0) patientsMark = 0;
         else {
             for (Appointment appointment : appointments) {
                 sumPatientsMark += appointment.getPatient().evaluate();
             }
-            patientsMark = sumPatientsMark / appointments.length;
+            patientsMark = sumPatientsMark / appointments.size();
         }
 
         return (staffManagerMark + patientsMark) / 2;

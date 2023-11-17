@@ -1,7 +1,6 @@
 package com.solvd.laba.block1.oop.service;
 
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
-import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
 import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
 import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
@@ -13,20 +12,22 @@ import com.solvd.laba.block1.oop.process.MedicalReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 public final class Clinic implements Department, Evaluation {
-    private static MedicalReport[] medicalReportList;
+    private static List<MedicalReport> medicalReportList;
     private int medicalReportCount;
-    private final int maxMedicalReportCount = 40;
 
     private static final Logger LOGGER = LogManager.getLogger(Clinic.class);
 
     public Clinic() {
-        medicalReportList = new MedicalReport[maxMedicalReportCount];
+        medicalReportList = new LinkedList<>();
         medicalReportCount = 0;
     }
 
-    public int admitPatient(int appointmentId, Patient patient, Symptom symptom) {
+    public int admitPatient(int appointmentId, Patient patient, String symptom) {
         Appointment appointment = null;
         try {
             appointment = Registry.findAppointmentById(appointmentId);
@@ -51,16 +52,16 @@ public final class Clinic implements Department, Evaluation {
     }
 
     private boolean addMedicalReport(MedicalReport medicalReport) {
-        medicalReportList[medicalReportCount] = medicalReport;
+        medicalReportList.add(medicalReport);
         medicalReportCount++;
         return true;
     }
 
-    public MedicalReport[] getMedicalReportList() {
+    public List<MedicalReport> getMedicalReportList() {
         return medicalReportList;
     }
 
-    public void setMedicalReportList(MedicalReport[] medicalReportList) {
+    public void setMedicalReportList(List<MedicalReport> medicalReportList) {
         Clinic.medicalReportList = medicalReportList;
     }
 
@@ -82,8 +83,8 @@ public final class Clinic implements Department, Evaluation {
     @Override
     public double getRating() {
         int markSum = 0;
-        for (int i = 0; i < medicalReportCount; i++) {
-            markSum += medicalReportList[i].getAppointment().getPatient().evaluate();
+        for (MedicalReport report : medicalReportList) {
+            markSum += report.getAppointment().getPatient().evaluate();
         }
         if (medicalReportCount != 0) return markSum / medicalReportCount;
         else return 0;

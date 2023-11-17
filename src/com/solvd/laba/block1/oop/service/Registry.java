@@ -6,6 +6,7 @@ import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
 import com.solvd.laba.block1.oop.exception.PatientIsNotFoundException;
 import com.solvd.laba.block1.oop.interfaces.Department;
+import com.solvd.laba.block1.oop.list.MyLinkedList;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
@@ -13,85 +14,64 @@ import com.solvd.laba.block1.oop.process.StaffManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public final class Registry implements Department {
 
     private StaffManager staff;
-    private Patient[] patientsInClinic;
-    private static Appointment[] appointmentsList;
-    private final int clinicCapacity = 20;
-    private final int maxAppointmentsCount = 40;
-    private int appointmentsCount;
+    private List<Patient> patientsInClinic;
+    private static List<Appointment> appointmentsList;
 
     private static final Logger LOGGER = LogManager.getLogger(Registry.class);
 
     public Registry(StaffManager staff) {
         this.staff = staff;
-        this.patientsInClinic = new Patient[clinicCapacity];
-        appointmentsList = new Appointment[maxAppointmentsCount];
-        this.appointmentsCount = 0;
+        this.patientsInClinic = new ArrayList<>();
+        appointmentsList = new ArrayList<>();
     }
 
-    public Patient[] getPatientsInClinic() {
+    public List<Patient> getPatientsInClinic() {
         return patientsInClinic;
     }
 
-    public void setPatientsInClinic(Patient[] patientsInClinic) {
+    public void setPatientsInClinic(List<Patient> patientsInClinic) {
         this.patientsInClinic = patientsInClinic;
     }
 
-    public Appointment[] getAppointmentsList() {
+    public List<Appointment> getAppointmentsList() {
         return appointmentsList;
     }
 
-    public void setAppointmentsList(Appointment[] appointmentsList) {
+    public void setAppointmentsList(List<Appointment> appointmentsList) {
         Registry.appointmentsList = appointmentsList;
     }
 
-    public int getAppointmentsCount() {
-        return appointmentsCount;
-    }
-
-    public void setAppointmentsCount(int appointmentsCount) {
-        this.appointmentsCount = appointmentsCount;
-    }
-
     public void registerPatient(Patient patient) {
-        int i = 0;
-        while (patientsInClinic[i] != null && i < patientsInClinic.length) {
-            if (patientsInClinic[i].equals(patient)) {
-                LOGGER.warn("This patient has already registered.");
-                break;
+        if (patientsInClinic.indexOf(patient) != -1) {
+            LOGGER.warn("This patient has already registered.");
             } else {
-                i++;
-            }
-        }
-        if (i == patientsInClinic.length) {
-            LOGGER.warn("We can't register a new patient.");
-        } else {
-            patientsInClinic[i] = patient;
+            patientsInClinic.add(patient);
             LOGGER.info("Patient " + patient.getLastName() + " is registered.");
         }
     }
 
-    public static Appointment[] getAppointmentListByDoctor(Doctor doctor) {
-        Appointment[] appointments = new Appointment[appointmentsList.length];
-        int count = 0;
+    public static List<Appointment> getAppointmentListByDoctor(Doctor doctor) {
+        List<Appointment> doctorAppointments = new ArrayList<>();
+
         for (Appointment appointment : appointmentsList) {
-            if (appointment != null && appointment.getDoctor().equals(doctor)) {
-                appointments[count] = appointment;
-                count++;
+            if (appointment.getDoctor().equals(doctor)) {
+                doctorAppointments.add(appointment);
             }
         }
 
-        return Arrays.copyOf(appointments, count);
+        return doctorAppointments;
     }
 
     public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot)
             throws DoctorIsNotFoundException {
-
         try {
             findPatient(patient.getLastName());
         } catch (PatientIsNotFoundException e) {
@@ -103,8 +83,7 @@ public final class Registry implements Department {
 
             Appointment appointment = new Appointment(random.nextInt(999), doctor, patient, weekDay, timeSlot);
 
-            appointmentsList[appointmentsCount] = appointment;
-            appointmentsCount++;
+            appointmentsList.add(appointment);
             appointment.setStatus(AppointmentStatus.PLANED);
 
             doctor.chooseTimeSlot(weekDay, timeSlot);
