@@ -15,7 +15,7 @@ public class MedicalReport implements Printable {
     private String recommendation;
     private boolean hospitalization;
 
-    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class);
 
     public MedicalReport(int id, Appointment appointment, Symptom symptom, Diagnosis diagnosis, String recommendation,
                          boolean hospitalization) {

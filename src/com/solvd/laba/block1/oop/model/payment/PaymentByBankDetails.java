@@ -8,10 +8,10 @@ import org.apache.logging.log4j.Logger;
 
 
 public class PaymentByBankDetails implements PaymentSystem {
-    private static final Logger LOGGER = LogManager.getLogger(PaymentByBankDetails.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(PaymentByBankDetails.class);
 
     @Override
-    public void pay(double cost) throws BankIsNotAvailableException {
+    public void pay(double cost) {
         String iban = PayOffice.getBankDetails();
         try (BankSession bankSession = new Bank().getBankSession()) {
             LOGGER.info(cost + "$ was payed on the bank account " + iban + ". Tranzaction id: "

@@ -14,7 +14,7 @@ public final class Hospital implements Department, Evaluation {
     private int patientsCount = 0;
     private final int hospitalCapacity = 20;
 
-    private static final Logger LOGGER = LogManager.getLogger(Hospital.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Hospital.class);
 
     public Hospital() {
         this.patientsInHospital = new Patient[hospitalCapacity];
@@ -29,7 +29,7 @@ public final class Hospital implements Department, Evaluation {
     }
 
     public boolean hospitalizePatient(int reportId, Patient patient)
-            throws HospitalIsFullException, IllegalMedicalReportIdException {
+            throws IllegalMedicalReportIdException {
         try {
             hospitalIsFull();
         } catch (HospitalIsFullException e) {
@@ -55,7 +55,7 @@ public final class Hospital implements Department, Evaluation {
         if (hospitalCapacity == patientsCount) {
             throw new HospitalIsFullException("Hospital is full. We can't hospitalized a new patient.");
         }
-        return hospitalCapacity == patientsCount;
+        return false;
     }
 
     public Patient findPatient(String lastName) {

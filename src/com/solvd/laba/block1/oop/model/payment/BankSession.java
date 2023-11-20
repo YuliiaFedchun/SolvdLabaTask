@@ -1,6 +1,5 @@
 package com.solvd.laba.block1.oop.model.payment;
 
-import com.solvd.laba.block1.oop.exception.BankIsNotAvailableException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -8,7 +7,7 @@ import java.util.Random;
 
 public class BankSession implements AutoCloseable {
     private int id;
-    private static final Logger LOGGER = LogManager.getLogger(BankSession.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(BankSession.class);
 
     public BankSession() {
         Random random = new Random();
@@ -24,7 +23,7 @@ public class BankSession implements AutoCloseable {
     }
 
     @Override
-    public void close() throws BankIsNotAvailableException {
+    public void close() {
         LOGGER.info("Bank session is closed.");
     }
 }

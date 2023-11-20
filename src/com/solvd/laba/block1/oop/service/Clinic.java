@@ -19,14 +19,14 @@ public final class Clinic implements Department, Evaluation {
     private int medicalReportCount;
     private final int maxMedicalReportCount = 40;
 
-    private static final Logger LOGGER = LogManager.getLogger(Clinic.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Clinic.class);
 
     public Clinic() {
         medicalReportList = new MedicalReport[maxMedicalReportCount];
         medicalReportCount = 0;
     }
 
-    public int admitPatient(int appointmentId, Patient patient, Symptom symptom) throws IllegalAppointmentIdException {
+    public int admitPatient(int appointmentId, Patient patient, Symptom symptom) {
         Appointment appointment = null;
         try {
             appointment = Registry.findAppointmentById(appointmentId);
@@ -65,18 +65,13 @@ public final class Clinic implements Department, Evaluation {
     }
 
     public static MedicalReport findMedicalReportById(int id) throws IllegalMedicalReportIdException {
-        MedicalReport foundReport = null;
         for (MedicalReport medicalReport : medicalReportList) {
             if (medicalReport.getReportId() == id) {
-                foundReport = medicalReport;
-                return foundReport;
+                return medicalReport;
             }
         }
-        if (foundReport == null) {
-            throw new IllegalMedicalReportIdException("Medical report id " + id + " is wrong.");
-        }
+        throw new IllegalMedicalReportIdException("Medical report id " + id + " is wrong.");
 
-        return foundReport;
     }
 
     @Override

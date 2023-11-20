@@ -13,7 +13,7 @@ public class StaffManager {
     private static Doctor[] doctors;
     private static Nurse[] nurses;
 
-    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class);
 
     public StaffManager(Doctor[] doctors, Nurse[] nurses) {
         this.doctors = doctors;
@@ -60,19 +60,12 @@ public class StaffManager {
     }
 
     public static Doctor findDoctor(String lastName) throws DoctorIsNotFoundException {
-        Doctor foundDoc = null;
         for (Doctor doctor : doctors) {
             if (doctor.getLastName().equals(lastName)) {
-                foundDoc = doctor;
-                return foundDoc;
+                return doctor;
             }
         }
-
-        if (foundDoc == null) {
-            throw new DoctorIsNotFoundException("Doctor " + lastName + " doesn't work here.");
-        }
-
-        return foundDoc;
+        throw new DoctorIsNotFoundException("Doctor " + lastName + " doesn't work here.");
     }
 
     public Nurse[] getNurses() {
@@ -83,7 +76,7 @@ public class StaffManager {
         this.nurses = nurses;
     }
 
-    public static int evaluateDoctor(Doctor doctor) throws DoctorIsNotFoundException {
+    public static int evaluateDoctor(Doctor doctor) {
         try {
             findDoctor(doctor.getLastName());
             Random random = new Random();

@@ -19,7 +19,7 @@ public final class PayOffice implements Department {
     private final int maxReceiptCount = 20;
     private static final String IBAN;
 
-    private static final Logger LOGGER = LogManager.getLogger(PayOffice.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(PayOffice.class);
 
     static {
         StringBuilder prop = new StringBuilder("UA");

@@ -24,7 +24,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     private int[][] schedule;
     private int consultationCost;
 
-    private static final Logger LOGGER = LogManager.getLogger(Doctor.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
     public Doctor(String firstName, String lastName, int age, String phoneNumber, String address,
                   String speciality, int consultationCost) {

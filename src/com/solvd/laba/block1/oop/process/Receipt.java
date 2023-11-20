@@ -10,7 +10,7 @@ public class Receipt implements Printable {
     private Patient patient;
     private double cost;
 
-    private static final Logger LOGGER = LogManager.getLogger(Receipt.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Receipt.class);
 
     public Receipt(Patient patient, double cost) {
         this.patient = patient;

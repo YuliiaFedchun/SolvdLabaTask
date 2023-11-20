@@ -25,7 +25,7 @@ public final class Registry implements Department {
     private final int maxAppointmentsCount = 40;
     private int appointmentsCount;
 
-    private static final Logger LOGGER = LogManager.getLogger(Registry.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Registry.class);
 
     public Registry(StaffManager staff) {
         this.staff = staff;
@@ -58,23 +58,21 @@ public final class Registry implements Department {
         this.appointmentsCount = appointmentsCount;
     }
 
-    public boolean registerPatient(Patient patient) {
+    public void registerPatient(Patient patient) {
         int i = 0;
         while (patientsInClinic[i] != null && i < patientsInClinic.length) {
             if (patientsInClinic[i].equals(patient)) {
                 LOGGER.warn("This patient has already registered.");
-                return false;
+                break;
             } else {
                 i++;
             }
         }
         if (i == patientsInClinic.length) {
             LOGGER.warn("We can't register a new patient.");
-            return false;
         } else {
             patientsInClinic[i] = patient;
             LOGGER.info("Patient " + patient.getLastName() + " is registered.");
-            return true;
         }
     }
 
@@ -92,7 +90,7 @@ public final class Registry implements Department {
     }
 
     public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot)
-            throws DoctorIsNotFoundException, PatientIsNotFoundException {
+            throws DoctorIsNotFoundException {
 
         try {
             findPatient(patient.getLastName());
@@ -115,37 +113,27 @@ public final class Registry implements Department {
             return appointment.getId();
         } else {
             LOGGER.warn("Chosen time slot isn't available.");
+            return 0;
         }
-
-        return 0;
     }
 
     private Patient findPatient(String lastName) throws PatientIsNotFoundException {
-        Patient foundPatient = null;
         for (Patient patient : patientsInClinic) {
             if (patient.getLastName().equals(lastName)) {
-                foundPatient = patient;
                 return patient;
             }
         }
-        if (foundPatient == null) {
-            throw new PatientIsNotFoundException("You should register patient " + lastName + " first");
-        }
-        return foundPatient;
+        throw new PatientIsNotFoundException("You should register patient " + lastName + " first");
+
     }
 
     public static Appointment findAppointmentById(int id) throws IllegalAppointmentIdException {
-        Appointment foundAppointment = null;
         for (Appointment appointment : appointmentsList) {
             if (appointment.getId() == id) {
-                foundAppointment = appointment;
-                return foundAppointment;
+                return appointment;
             }
         }
-        if (foundAppointment == null) {
-            throw new IllegalAppointmentIdException("Appointment id " + id + " is wrong");
-        }
-        return foundAppointment;
+        throw new IllegalAppointmentIdException("Appointment id " + id + " is wrong");
     }
 
     @Override

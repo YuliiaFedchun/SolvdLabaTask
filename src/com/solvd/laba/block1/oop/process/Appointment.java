@@ -19,7 +19,7 @@ public class Appointment implements Printable {
     private int timeSlot;
     private AppointmentStatus appointmentStatus;
 
-    private static final Logger LOGGER = LogManager.getLogger(Appointment.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Appointment.class);
 
     public Appointment(int id, Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
         this.id = id;
