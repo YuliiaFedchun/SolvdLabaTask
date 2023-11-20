@@ -9,7 +9,7 @@ public class Nurse extends Person implements Worker {
     private int experienceYears;
     private int[] schedule;
 
-    private static final Logger LOGGER = LogManager.getLogger(Nurse.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Nurse.class);
 
     public Nurse(String firstName, String lastName, int age, String phoneNumber, String address, int experienceYears) {
         super(firstName, lastName, age, phoneNumber, address);

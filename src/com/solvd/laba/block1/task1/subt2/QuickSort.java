@@ -1,9 +1,5 @@
 package com.solvd.laba.block1.task1.subt2;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
-
 public class QuickSort {
     // use quicksort algorithm
     public static void sortArray(int[] array, int begin, int end) {

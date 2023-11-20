@@ -5,16 +5,22 @@ It allows to implement payment system selection by Patient.
 
 The "process" package contains entities that represent internal documents (Appointment, MedicalReport, and Receipt)
 and services (StaffManager).
-Also it contains Printable interface witch is implemented by Appointment, MedicalReport and Receipt.
 StaffManager contains information about staff (doctors, nurses) and "operation" on them (hire/fire doctor or nurse,
 find doctor, find doctors by speciality etc).
 
 The "service" package contains classes that represent the departments of the hospital with which the patient is in
 contact: Registry, Clinic (as a polyclinic), Hospital (as an inpatient hospital), and PayOffice.
-The Department interface presents common operation for different hospital department.
 
-The Evaluation interface contains operation for evaluation of the Doctor, Clinic, Hospital (getRating()).
-Clinic and hospital are evaluated by patients. Doctor is evaluated by patients and staff manager.
+The "interfaces" package containes interfaces:
+ Worker is implemented by Doctor and Nurse
+ Evaluation is implemented by Doctor, Clinic, Hospital. It contains operation for evaluation: getRating().
+ Clinic and hospital are evaluated by patients. Doctor is evaluated by patients and staff manager.
+ Department is implemented by Clinic, Registry, Hospital and PayOffice.
+ Printable is implemented by (documents) Appointment, MedicalReport and Receipt
+ PaymentSystem is implemented by Cash, CreditCard, PaymentByBankDetails. This interfaces and classes are allows
+ to implement payment system selection by Patient.
+
+ The "exception" package contains classes which represent custom exceptions.
 
 Additional details.
 Registration implements without data, it only includes the week day and time.

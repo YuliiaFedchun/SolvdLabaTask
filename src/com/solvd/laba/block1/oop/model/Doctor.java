@@ -1,10 +1,10 @@
 package com.solvd.laba.block1.oop.model;
 
-import com.solvd.laba.block1.oop.interfaces.Evaluation;
 import com.solvd.laba.block1.oop.enums.Diagnosis;
 import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
+import com.solvd.laba.block1.oop.interfaces.Evaluation;
 import com.solvd.laba.block1.oop.interfaces.Worker;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.MedicalReport;
@@ -24,7 +24,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     private int[][] schedule;
     private int consultationCost;
 
-    private static final Logger LOGGER = LogManager.getLogger(Doctor.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
     public Doctor(String firstName, String lastName, int age, String phoneNumber, String address,
                   String speciality, int consultationCost) {
@@ -251,7 +251,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     }
 
     @Override
-    public double getRating() throws DoctorIsNotFound {
+    public double getRating() throws DoctorIsNotFoundException {
         int staffManagerMark = StaffManager.evaluateDoctor(this);
         double patientsMark;
         int sumPatientsMark = 0;

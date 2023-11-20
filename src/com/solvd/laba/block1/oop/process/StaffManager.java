@@ -1,9 +1,8 @@
 package com.solvd.laba.block1.oop.process;
 
-import com.solvd.laba.block1.oop.exception.DoctorIsNotFound;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Nurse;
-import com.solvd.laba.block1.oop.model.payment.BankSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +13,7 @@ public class StaffManager {
     private static Doctor[] doctors;
     private static Nurse[] nurses;
 
-    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class);
 
     public StaffManager(Doctor[] doctors, Nurse[] nurses) {
         this.doctors = doctors;
@@ -60,18 +59,13 @@ public class StaffManager {
         return doctorsBySpeciality;
     }
 
-    public static Doctor findDoctor(String lastName) throws DoctorIsNotFound {
-        try {
-            for (Doctor doctor : doctors) {
-                if (doctor.getLastName().equals(lastName)) {
-                    return doctor;
-                }
+    public static Doctor findDoctor(String lastName) throws DoctorIsNotFoundException {
+        for (Doctor doctor : doctors) {
+            if (doctor.getLastName().equals(lastName)) {
+                return doctor;
             }
-        } catch (Exception e) {
-            LOGGER.error("Doctor " + lastName + " doesn't work here.", e);
-            throw new DoctorIsNotFound("Doctor " + lastName + " doesn't work here.");
         }
-        return null;
+        throw new DoctorIsNotFoundException("Doctor " + lastName + " doesn't work here.");
     }
 
     public Nurse[] getNurses() {
@@ -82,14 +76,14 @@ public class StaffManager {
         this.nurses = nurses;
     }
 
-    public static int evaluateDoctor(Doctor doctor) throws DoctorIsNotFound {
+    public static int evaluateDoctor(Doctor doctor) {
         try {
             findDoctor(doctor.getLastName());
             Random random = new Random();
             return random.nextInt(11);
-        } catch (Exception e) {
-            LOGGER.error("Doctor " + doctor.getLastName() + " doesn't work here.", e);
-            throw new DoctorIsNotFound("Doctor " + doctor.getLastName() + " doesn't work here.");
+        } catch (DoctorIsNotFoundException e) {
+            LOGGER.error(e.getMessage(), e);
+            return 0;
         }
     }
 }

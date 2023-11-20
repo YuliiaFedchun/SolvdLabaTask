@@ -1,10 +1,10 @@
 package com.solvd.laba.block1.oop.service;
 
+import com.solvd.laba.block1.oop.enums.WeekDay;
+import com.solvd.laba.block1.oop.exception.HospitalIsFullException;
+import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
 import com.solvd.laba.block1.oop.interfaces.Department;
 import com.solvd.laba.block1.oop.interfaces.Evaluation;
-import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.exception.HospitalIsFull;
-import com.solvd.laba.block1.oop.exception.IllegalMedicalReportId;
 import com.solvd.laba.block1.oop.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ public final class Hospital implements Department, Evaluation {
     private int patientsCount = 0;
     private final int hospitalCapacity = 20;
 
-    private static final Logger LOGGER = LogManager.getLogger(Hospital.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Hospital.class);
 
     public Hospital() {
         this.patientsInHospital = new Patient[hospitalCapacity];
@@ -28,11 +28,14 @@ public final class Hospital implements Department, Evaluation {
         this.patientsInHospital = patientsInHospital;
     }
 
-    public boolean hospitalizePatient(int reportId, Patient patient) throws HospitalIsFull, IllegalMedicalReportId {
-        if (hospitalCapacity == patientsCount) {
-            LOGGER.error("Hospital is full. We can't hospitalized the patient.");
-            throw new HospitalIsFull("Hospital is full. We can't hospitalized the patient.");
+    public boolean hospitalizePatient(int reportId, Patient patient)
+            throws IllegalMedicalReportIdException {
+        try {
+            hospitalIsFull();
+        } catch (HospitalIsFullException e) {
+            LOGGER.error(e.getMessage(), e);
         }
+
         if (findPatient(patient.getLastName()) != null
                 && findPatient(patient.getLastName()).equals(patient)) {
             LOGGER.info("This patient is in the hospital now.");
@@ -44,6 +47,13 @@ public final class Hospital implements Department, Evaluation {
             return true;
         } else {
             LOGGER.info("The patient does not require hospitalization.");
+        }
+        return false;
+    }
+
+    private boolean hospitalIsFull() throws HospitalIsFullException {
+        if (hospitalCapacity == patientsCount) {
+            throw new HospitalIsFullException("Hospital is full. We can't hospitalized a new patient.");
         }
         return false;
     }

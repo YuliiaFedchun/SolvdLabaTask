@@ -15,19 +15,17 @@ import com.solvd.laba.block1.oop.service.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Properties;
-
-import static com.solvd.laba.block1.oop.enums.WeekDay.SAT;
 import static com.solvd.laba.block1.oop.enums.WeekDay.WED;
 
 public class HospitalApplication {
     static {
-        System.setProperty("log4j2.configurationFile","log4j2.xml");
+        System.setProperty("log4j2.configurationFile", "log4j2.xml");
     }
+
     private static final Logger LOGGER = LogManager.getLogger(HospitalApplication.class);
 
-    public static void main(String[] args) throws DoctorIsNotFound, PatientIsNotFound, IllegalAppointmentId, HospitalIsFull, IllegalMedicalReportId, BankIsNotAvailable {
-       //Patient with insurance
+    public static void main(String[] args) throws DoctorIsNotFoundException, PatientIsNotFoundException, IllegalAppointmentIdException, HospitalIsFullException, IllegalMedicalReportIdException, BankIsNotAvailableException {
+        //Patient with insurance
         Patient patient1 =
                 new Patient("Mike", "Brown", 30, "05077777777",
                         "Krasnova str, 21", "brown@gmail.com");

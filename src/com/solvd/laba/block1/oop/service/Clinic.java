@@ -1,12 +1,12 @@
 package com.solvd.laba.block1.oop.service;
 
-import com.solvd.laba.block1.oop.interfaces.Department;
-import com.solvd.laba.block1.oop.interfaces.Evaluation;
 import com.solvd.laba.block1.oop.enums.AppointmentStatus;
 import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.enums.WeekDay;
-import com.solvd.laba.block1.oop.exception.IllegalAppointmentId;
-import com.solvd.laba.block1.oop.exception.IllegalMedicalReportId;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
+import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
+import com.solvd.laba.block1.oop.interfaces.Department;
+import com.solvd.laba.block1.oop.interfaces.Evaluation;
 import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
 import com.solvd.laba.block1.oop.process.MedicalReport;
@@ -19,16 +19,22 @@ public final class Clinic implements Department, Evaluation {
     private int medicalReportCount;
     private final int maxMedicalReportCount = 40;
 
-    private static final Logger LOGGER = LogManager.getLogger(Clinic.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(Clinic.class);
 
     public Clinic() {
         medicalReportList = new MedicalReport[maxMedicalReportCount];
         medicalReportCount = 0;
     }
 
-    public int admitPatient(int appointmentId, Patient patient, Symptom symptom) throws IllegalAppointmentId {
-        Appointment appointment = Registry.findAppointmentById(appointmentId);
-        if (appointment != null && appointment.getStatus().equals(AppointmentStatus.PLANED) && appointment.getPatient().equals(patient)) {
+    public int admitPatient(int appointmentId, Patient patient, Symptom symptom) {
+        Appointment appointment = null;
+        try {
+            appointment = Registry.findAppointmentById(appointmentId);
+        } catch (IllegalAppointmentIdException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        if (appointment != null && appointment.getStatus().equals(AppointmentStatus.PLANED)
+                && appointment.getPatient().equals(patient)) {
             MedicalReport medicalReport = appointment.getDoctor().makeConsultation(appointment, symptom);
 
             addMedicalReport(medicalReport);
@@ -58,17 +64,14 @@ public final class Clinic implements Department, Evaluation {
         Clinic.medicalReportList = medicalReportList;
     }
 
-    public static MedicalReport findMedicalReportById(int id) throws IllegalMedicalReportId {
-        try {
-            for (MedicalReport medicalReport : medicalReportList) {
-                if (medicalReport.getReportId() == id) {
-                    return medicalReport;
-                }
+    public static MedicalReport findMedicalReportById(int id) throws IllegalMedicalReportIdException {
+        for (MedicalReport medicalReport : medicalReportList) {
+            if (medicalReport.getReportId() == id) {
+                return medicalReport;
             }
-        } catch (Exception e) {
-            throw new IllegalMedicalReportId("Medical report id " + id + " is wrong.");
         }
-        return null;
+        throw new IllegalMedicalReportIdException("Medical report id " + id + " is wrong.");
+
     }
 
     @Override

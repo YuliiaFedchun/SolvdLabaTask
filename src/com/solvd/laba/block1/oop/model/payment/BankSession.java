@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class BankSession implements AutoCloseable {
     private int id;
-    private static final Logger LOGGER = LogManager.getLogger(BankSession.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(BankSession.class);
 
     public BankSession() {
         Random random = new Random();
@@ -23,7 +23,7 @@ public class BankSession implements AutoCloseable {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         LOGGER.info("Bank session is closed.");
     }
 }
