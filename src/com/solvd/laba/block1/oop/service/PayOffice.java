@@ -16,10 +16,10 @@ import java.util.Set;
 
 
 public final class PayOffice implements Department {
+    private static final Logger LOGGER = LogManager.getLogger(PayOffice.class);
+
     private Set<Receipt> payments;
     private static final String IBAN;
-
-    private static final Logger LOGGER = LogManager.getLogger(PayOffice.class);
 
     static {
         StringBuilder prop = new StringBuilder("UA");

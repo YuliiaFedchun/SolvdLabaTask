@@ -15,13 +15,12 @@ import java.util.*;
 
 
 public class Doctor extends Person implements Worker, Evaluation {
+    private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
     private String speciality;
     private int[][] schedule;
     private int consultationCost;
     private Map<String, String> medBook;
-
-    private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
     public Doctor(String firstName, String lastName, int age, String phoneNumber, String address,
                   String speciality, int consultationCost) {

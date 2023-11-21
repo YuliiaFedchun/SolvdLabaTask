@@ -1,22 +1,10 @@
 package com.solvd.laba.block1.oop.list;
 
-import com.solvd.laba.block1.oop.model.Doctor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class MyLinkedList<T> implements Iterable<T> {
     private Node<T> head;
     private int length;
-
-    public MyLinkedList() {
-        this.head = null;
-        this.length = 0;
-    }
 
     public void add(T data) {
         Node<T> temp = new Node<>(data);
@@ -33,7 +21,7 @@ public class MyLinkedList<T> implements Iterable<T> {
         length++;
     }
 
-    public T get (int position) {
+    public T get(int position) {
         if (position < 0 || position >= length) {
             throw new IndexOutOfBoundsException("Index out of range.");
         }
@@ -98,6 +86,7 @@ public class MyLinkedList<T> implements Iterable<T> {
     public Iterator<T> iterator() {
         return new Iterator<T>() {
             private Node<T> someNode = head;
+
             @Override
             public boolean hasNext() {
                 return someNode != null;

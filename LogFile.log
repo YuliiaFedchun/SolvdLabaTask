@@ -543,3 +543,21 @@ Your recommendation and treatment: To breathe moist cool air. To drink plenty of
 11:21:07.346 [main] Hospital.hospitalizePatient [49] INFO  - The patient Brown was admitted to the hospital.
 11:21:07.346 [main] HospitalApplication.main [134] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'} is in the hospital.
 11:21:07.346 [main] HospitalApplication.main [137] INFO  - The doctor's Black rating is 5.5
+01:42:47.454 [main] HospitalApplication.main [41] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
+01:42:47.470 [main] HospitalApplication.main [55] INFO  - Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
+01:42:47.485 [main] Registry.registerPatient [54] INFO  - Patient Brown is registered.
+01:42:47.501 [main] Registry.registerAppointment [87] INFO  - Your appointment for Brown is planed. 
+Appointment info: 
+com.solvd.laba.block1.oop.process.Appointment@29ac1c17
+01:42:47.523 [main] Appointment.print [95] INFO  - Appointment{id=302
+doctor=Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
+patient=Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
+weekDay=WED, time=10:00}
+01:42:47.539 [main] Clinic.admitPatient [45] INFO  - Mr./Mrs. Brown, thanks for your visit. 
+Your recommendation and treatment: To breathe moist cool air. To drink plenty of fluids.
+01:42:47.554 [main] MedicalReport.print [78] INFO  - MedicalReport{id=426, symptom=Cough, diagnosis=Bronchitis, recommendation='To breathe moist cool air. To drink plenty of fluids.', hospitalization=false}
+01:42:47.570 [main] PayOffice.acceptPayment [52] INFO  - Mr./Mrs. Brown, you should pay: 40.0$
+01:42:47.570 [main] Cash.pay [13] INFO  - 40.0$ was payed by cash.
+01:42:47.585 [main] Receipt.print [38] INFO  - Receipt{patient=Mike Brown, cost=40.0$}
+01:42:47.585 [main] Hospital.hospitalizePatient [48] INFO  - The patient does not require hospitalization.
+01:42:47.585 [main] HospitalApplication.main [125] INFO  - The doctor's Black rating is 3.0

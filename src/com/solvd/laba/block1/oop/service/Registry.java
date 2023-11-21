@@ -6,7 +6,6 @@ import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
 import com.solvd.laba.block1.oop.exception.PatientIsNotFoundException;
 import com.solvd.laba.block1.oop.interfaces.Department;
-import com.solvd.laba.block1.oop.list.MyLinkedList;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Patient;
 import com.solvd.laba.block1.oop.process.Appointment;
@@ -15,17 +14,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public final class Registry implements Department {
+    private static final Logger LOGGER = LogManager.getLogger(Registry.class);
 
     private StaffManager staff;
     private List<Patient> patientsInClinic;
     private static List<Appointment> appointmentsList;
-
-    private static final Logger LOGGER = LogManager.getLogger(Registry.class);
 
     public Registry(StaffManager staff) {
         this.staff = staff;
@@ -52,7 +49,7 @@ public final class Registry implements Department {
     public void registerPatient(Patient patient) {
         if (patientsInClinic.indexOf(patient) != -1) {
             LOGGER.warn("This patient has already registered.");
-            } else {
+        } else {
             patientsInClinic.add(patient);
             LOGGER.info("Patient " + patient.getLastName() + " is registered.");
         }

@@ -17,10 +17,10 @@ import java.util.List;
 
 
 public final class Clinic implements Department, Evaluation {
+    private static final Logger LOGGER = LogManager.getLogger(Clinic.class);
+
     private static List<MedicalReport> medicalReportList;
     private int medicalReportCount;
-
-    private static final Logger LOGGER = LogManager.getLogger(Clinic.class);
 
     public Clinic() {
         medicalReportList = new LinkedList<>();

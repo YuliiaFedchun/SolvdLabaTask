@@ -6,14 +6,14 @@ import org.apache.logging.log4j.Logger;
 
 
 public class MedicalReport implements Printable {
+    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class);
+
     private int reportId;
     private Appointment appointment;
     private String symptom;
     private String diagnosis;
     private String recommendation;
     private boolean hospitalization;
-
-    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class);
 
     public MedicalReport(int id, Appointment appointment, String symptom, String diagnosis, String recommendation,
                          boolean hospitalization) {

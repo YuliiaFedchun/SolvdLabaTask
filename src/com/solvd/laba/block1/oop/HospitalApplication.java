@@ -1,7 +1,9 @@
 package com.solvd.laba.block1.oop;
 
-import com.solvd.laba.block1.oop.exception.*;
-import com.solvd.laba.block1.oop.list.MyLinkedList;
+import com.solvd.laba.block1.oop.exception.BankIsNotAvailableException;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
+import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Insurance;
 import com.solvd.laba.block1.oop.model.Nurse;
@@ -29,9 +31,8 @@ public class HospitalApplication {
 
     private static final Logger LOGGER = LogManager.getLogger(HospitalApplication.class);
 
-    public static void main(String[] args) throws DoctorIsNotFoundException, PatientIsNotFoundException,
-            IllegalAppointmentIdException, HospitalIsFullException, IllegalMedicalReportIdException,
-            BankIsNotAvailableException {
+    public static void main(String[] args) throws DoctorIsNotFoundException, IllegalAppointmentIdException,
+            IllegalMedicalReportIdException, BankIsNotAvailableException {
 
         //Patient with insurance
         Patient patient1 =
@@ -78,7 +79,7 @@ public class HospitalApplication {
 
         //medical directory with symptoms and diagnosis
         Map<String, String> medBook = new HashMap<>();
-        medBook.put("Fever","Influenza");
+        medBook.put("Fever", "Influenza");
         medBook.put("Toothache", "Pulpit");
         medBook.put("Headache", "Hypertension");
         medBook.put("Stomachache", "Stomach ucler");
@@ -119,7 +120,7 @@ public class HospitalApplication {
         //Hospital
         Hospital hospital = new Hospital();
         hospital.hospitalizePatient(medicalReport1Id, patient1);
-        for (Patient patient:
+        for (Patient patient :
                 hospital.getPatientsInHospital()) {
             LOGGER.info(patient + " is in the hospital.");
         }

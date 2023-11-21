@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.Random;
 
 public class BankSession implements AutoCloseable {
-    private int id;
     private static final Logger LOGGER = LogManager.getLogger(BankSession.class);
+    private int id;
 
     public BankSession() {
         Random random = new Random();

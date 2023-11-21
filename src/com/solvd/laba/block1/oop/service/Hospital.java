@@ -10,15 +10,11 @@ import com.solvd.laba.block1.oop.model.Patient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class Hospital implements Department, Evaluation {
-    private MyLinkedList<Patient> patientsInHospital;
-    private int patientsCount = 0;
-    private final int hospitalCapacity = 20;
-
     private static final Logger LOGGER = LogManager.getLogger(Hospital.class);
+
+    private MyLinkedList<Patient> patientsInHospital;
+    private final int hospitalCapacity = 20;
 
     public Hospital() {
         this.patientsInHospital = new MyLinkedList<>();
@@ -55,7 +51,7 @@ public final class Hospital implements Department, Evaluation {
     }
 
     private boolean hospitalIsFull() throws HospitalIsFullException {
-        if (hospitalCapacity == patientsCount) {
+        if (hospitalCapacity == patientsInHospital.size()) {
             throw new HospitalIsFullException("Hospital is full. We can't hospitalized a new patient.");
         }
         return false;

@@ -1,6 +1,5 @@
 package com.solvd.laba.block1.oop.process;
 
-import com.solvd.laba.block1.oop.list.MyLinkedList;
 import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Nurse;
@@ -13,10 +12,10 @@ import java.util.Random;
 
 
 public class StaffManager {
+    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class);
+
     private static List<Doctor> doctors;
     private static List<Nurse> nurses;
-
-    private static final Logger LOGGER = LogManager.getLogger(StaffManager.class);
 
     public StaffManager(List<Doctor> doctors, List<Nurse> nurses) {
         this.doctors = doctors;

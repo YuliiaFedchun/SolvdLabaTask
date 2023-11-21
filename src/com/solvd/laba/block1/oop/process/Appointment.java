@@ -12,14 +12,14 @@ import java.util.Objects;
 
 
 public class Appointment implements Printable {
+    private static final Logger LOGGER = LogManager.getLogger(Appointment.class);
+
     private final int id;
     private Doctor doctor;
     private Patient patient;
     private WeekDay weekDay;
     private int timeSlot;
     private AppointmentStatus appointmentStatus;
-
-    private static final Logger LOGGER = LogManager.getLogger(Appointment.class);
 
     public Appointment(int id, Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot) {
         this.id = id;
