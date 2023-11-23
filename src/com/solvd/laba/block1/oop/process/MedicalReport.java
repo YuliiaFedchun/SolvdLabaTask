@@ -1,23 +1,21 @@
 package com.solvd.laba.block1.oop.process;
 
-import com.solvd.laba.block1.oop.enums.Diagnosis;
-import com.solvd.laba.block1.oop.enums.Symptom;
 import com.solvd.laba.block1.oop.interfaces.Printable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 
 public class MedicalReport implements Printable {
+    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class);
+
     private int reportId;
     private Appointment appointment;
-    private Symptom symptom;
-    private Diagnosis diagnosis;
+    private String symptom;
+    private String diagnosis;
     private String recommendation;
     private boolean hospitalization;
 
-    private static final Logger LOGGER = LogManager.getLogger(MedicalReport.class);
-
-    public MedicalReport(int id, Appointment appointment, Symptom symptom, Diagnosis diagnosis, String recommendation,
+    public MedicalReport(int id, Appointment appointment, String symptom, String diagnosis, String recommendation,
                          boolean hospitalization) {
         this.reportId = id;
         this.appointment = appointment;
@@ -43,19 +41,19 @@ public class MedicalReport implements Printable {
         this.appointment = appointment;
     }
 
-    public Symptom getSymptom() {
+    public String getSymptom() {
         return symptom;
     }
 
-    public void setSymptom(Symptom symptom) {
+    public void setSymptom(String symptom) {
         this.symptom = symptom;
     }
 
-    public Diagnosis getDiagnosis() {
+    public String getDiagnosis() {
         return diagnosis;
     }
 
-    public void setDiagnosis(Diagnosis diagnosis) {
+    public void setDiagnosis(String diagnosis) {
         this.diagnosis = diagnosis;
     }
 

@@ -1,7 +1,9 @@
 package com.solvd.laba.block1.oop;
 
-import com.solvd.laba.block1.oop.enums.Symptom;
-import com.solvd.laba.block1.oop.exception.*;
+import com.solvd.laba.block1.oop.exception.BankIsNotAvailableException;
+import com.solvd.laba.block1.oop.exception.DoctorIsNotFoundException;
+import com.solvd.laba.block1.oop.exception.IllegalAppointmentIdException;
+import com.solvd.laba.block1.oop.exception.IllegalMedicalReportIdException;
 import com.solvd.laba.block1.oop.model.Doctor;
 import com.solvd.laba.block1.oop.model.Insurance;
 import com.solvd.laba.block1.oop.model.Nurse;
@@ -15,6 +17,11 @@ import com.solvd.laba.block1.oop.service.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static com.solvd.laba.block1.oop.enums.WeekDay.WED;
 
 public class HospitalApplication {
@@ -24,7 +31,9 @@ public class HospitalApplication {
 
     private static final Logger LOGGER = LogManager.getLogger(HospitalApplication.class);
 
-    public static void main(String[] args) throws DoctorIsNotFoundException, PatientIsNotFoundException, IllegalAppointmentIdException, HospitalIsFullException, IllegalMedicalReportIdException, BankIsNotAvailableException {
+    public static void main(String[] args) throws DoctorIsNotFoundException, IllegalAppointmentIdException,
+            IllegalMedicalReportIdException, BankIsNotAvailableException {
+
         //Patient with insurance
         Patient patient1 =
                 new Patient("Mike", "Brown", 30, "05077777777",
@@ -43,6 +52,9 @@ public class HospitalApplication {
         Doctor doctor2 =
                 new Doctor("Henry", "Been", 29, "06711343434", "Pirogova street, 32",
                         "ortoped", 150);
+        Doctor doctor3 =
+                new Doctor("Mike", "Butler", 40, "06711567834", "The first street, 1",
+                        "oncolog", 200);
         LOGGER.info(doctor1);
         Nurse nurse1 = new Nurse("Nina", "White", 24, "09000000001", "Popova, 2", 5);
 
@@ -63,9 +75,27 @@ public class HospitalApplication {
                 {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
         doctor1.setSchedule(scheduleBlack);
         doctor2.setSchedule(scheduleBeen);
-        Doctor[] doctors = new Doctor[20];
-        doctors[0] = doctor1;
-        Nurse[] nurses = new Nurse[20];
+        doctor3.setSchedule(scheduleBeen);
+
+        //medical directory with symptoms and diagnosis
+        Map<String, String> medBook = new HashMap<>();
+        medBook.put("Fever", "Influenza");
+        medBook.put("Toothache", "Pulpit");
+        medBook.put("Headache", "Hypertension");
+        medBook.put("Stomachache", "Stomach ucler");
+        medBook.put("Cough", "Bronchitis");
+        medBook.put("Rash", "Chickenpox");
+        doctor1.setMedBook(medBook);
+        doctor2.setMedBook(medBook);
+        doctor3.setMedBook(medBook);
+
+        List<Doctor> doctors = new ArrayList<>();
+        doctors.add(doctor1);
+        doctors.add(doctor2);
+        doctors.add(doctor3);
+
+        List<Nurse> nurses = new ArrayList<>();
+        nurses.add(nurse1);
         StaffManager staff = new StaffManager(doctors, nurses);
 
         //Registry
@@ -77,7 +107,7 @@ public class HospitalApplication {
 
         //Clinic
         Clinic clinic = new Clinic();
-        Symptom symptom1 = Symptom.COUGH;
+        String symptom1 = "Cough";
         int medicalReport1Id = clinic.admitPatient(appointment1Id, patient1, symptom1);
         Clinic.findMedicalReportById(medicalReport1Id).print();
 
@@ -90,6 +120,11 @@ public class HospitalApplication {
         //Hospital
         Hospital hospital = new Hospital();
         hospital.hospitalizePatient(medicalReport1Id, patient1);
+        for (Patient patient :
+                hospital.getPatientsInHospital()) {
+            LOGGER.info(patient + " is in the hospital.");
+        }
+
         LOGGER.info("The doctor's " + doctor1.getLastName() + " rating is " + doctor1.getRating());
 
 

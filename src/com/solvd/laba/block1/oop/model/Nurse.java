@@ -6,10 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Nurse extends Person implements Worker {
+    private static final Logger LOGGER = LogManager.getLogger(Nurse.class);
+
     private int experienceYears;
     private int[] schedule;
-
-    private static final Logger LOGGER = LogManager.getLogger(Nurse.class);
 
     public Nurse(String firstName, String lastName, int age, String phoneNumber, String address, int experienceYears) {
         super(firstName, lastName, age, phoneNumber, address);

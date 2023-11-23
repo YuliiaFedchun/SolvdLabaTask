@@ -7,10 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 
 public class Receipt implements Printable {
+    private static final Logger LOGGER = LogManager.getLogger(Receipt.class);
+
     private Patient patient;
     private double cost;
-
-    private static final Logger LOGGER = LogManager.getLogger(Receipt.class);
 
     public Receipt(Patient patient, double cost) {
         this.patient = patient;

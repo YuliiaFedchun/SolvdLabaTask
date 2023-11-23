@@ -21,6 +21,8 @@ The "interfaces" package containes interfaces:
  to implement payment system selection by Patient.
 
  The "exception" package contains classes which represent custom exceptions.
+ The "list" package contains custom implementation of the LinkedList which used in the Hospital class.
+ The "enum" package contains enums: AppointmentStatus, DayType, WeekDay.
 
 Additional details.
 Registration implements without data, it only includes the week day and time.

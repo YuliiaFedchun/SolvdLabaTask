@@ -12,11 +12,11 @@ import java.util.Random;
 
 
 public class Patient extends Person {
+    private static final Logger LOGGER = LogManager.getLogger(Patient.class);
+
     private String email;
     private Insurance insurance;
     private PaymentSystem paymentSystem;
-
-    private static final Logger LOGGER = LogManager.getLogger(Patient.class);
 
     public Patient(String firstName, String lastName, int age, String phoneNumber, String address, String email) {
         super(firstName, lastName, age, phoneNumber, address);
