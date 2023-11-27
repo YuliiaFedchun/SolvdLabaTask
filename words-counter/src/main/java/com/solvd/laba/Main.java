@@ -9,13 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Main {
-    private static final String DATA_FILE_NAME = "data.txt";
-    private static final String DATA_FILE_PATH = Main.class.getResource(DATA_FILE_NAME).getPath();
-    private static final String RESULT_FILE_NAME = "result.txt";
+    private static final String DATA_FILE_PATH = "data.txt";
+    private static final String RESULT_FILE_PATH = "result.txt";
 
     public static void main(String[] args) throws IOException {
         String text = FileUtils.readFileToString(new File(DATA_FILE_PATH), "UTF-8");
-        FileUtils.writeStringToFile(new File(RESULT_FILE_NAME),
+        FileUtils.writeStringToFile(new File(RESULT_FILE_PATH),
                 "Number of unique words: " + uniqueWordsCount(text), "UTF-8");
 
     }
