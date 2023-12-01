@@ -11,7 +11,7 @@ find doctor, find doctors by speciality etc).
 The "service" package contains classes that represent the departments of the hospital with which the patient is in
 contact: Registry, Clinic (as a polyclinic), Hospital (as an inpatient hospital), and PayOffice.
 
-The "interfaces" package containes interfaces:
+The "interfaces" package contains interfaces:
  Worker is implemented by Doctor and Nurse
  Evaluation is implemented by Doctor, Clinic, Hospital. It contains operation for evaluation: getRating().
  Clinic and hospital are evaluated by patients. Doctor is evaluated by patients and staff manager.

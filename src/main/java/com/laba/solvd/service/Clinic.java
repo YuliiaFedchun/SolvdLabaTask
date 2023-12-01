@@ -11,6 +11,7 @@ import com.laba.solvd.process.Appointment;
 import com.laba.solvd.process.MedicalReport;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,10 +51,9 @@ public final class Clinic implements Department, Evaluation {
         return 0;
     }
 
-    private boolean addMedicalReport(MedicalReport medicalReport) {
+    private void addMedicalReport(MedicalReport medicalReport) {
         medicalReportList.add(medicalReport);
         medicalReportCount++;
-        return true;
     }
 
     public List<MedicalReport> getMedicalReportList() {
@@ -81,12 +81,14 @@ public final class Clinic implements Department, Evaluation {
 
     @Override
     public double getRating() {
-        int markSum = 0;
-        for (MedicalReport report : medicalReportList) {
-            markSum += report.getAppointment().getPatient().evaluate();
-        }
-        if (medicalReportCount != 0) return (double) markSum / medicalReportCount;
-        else return 0;
+        int markSum = medicalReportList.stream().mapToInt(report ->
+                report.getAppointment().getPatient().evaluate()).sum();
+        return (medicalReportCount != 0) ? (double) markSum / medicalReportCount : 0;
+    }
+
+    @Override
+    public String getName() {
+        return "Clinic";
     }
 
 }

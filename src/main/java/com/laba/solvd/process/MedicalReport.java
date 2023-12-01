@@ -80,7 +80,7 @@ public class MedicalReport implements Printable {
                         "id=" + reportId +
                         ", symptom=" + symptom +
                         ", diagnosis=" + diagnosis +
-                        ", recommendation='" + recommendation + '\'' +
+                        ", recommendation=" + recommendation +
                         ", hospitalization=" + hospitalization +
                         '}'
         );

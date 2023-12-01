@@ -1,5 +1,6 @@
 package com.laba.solvd.model;
 
+import com.laba.solvd.enums.DoctorSpeciality;
 import com.laba.solvd.enums.WeekDay;
 import com.laba.solvd.interfaces.Evaluation;
 import com.laba.solvd.interfaces.Worker;
@@ -16,13 +17,13 @@ import java.util.*;
 public class Doctor extends Person implements Worker, Evaluation {
     private static final Logger LOGGER = LogManager.getLogger(Doctor.class);
 
-    private String speciality;
+    private DoctorSpeciality speciality;
     private int[][] schedule;
     private int consultationCost;
     private Map<String, String> medBook;
 
     public Doctor(String firstName, String lastName, int age, String phoneNumber, String address,
-                  String speciality, int consultationCost) {
+                  DoctorSpeciality speciality, int consultationCost) {
         super(firstName, lastName, age, phoneNumber, address);
         this.speciality = speciality;
         this.consultationCost = consultationCost;
@@ -37,7 +38,7 @@ public class Doctor extends Person implements Worker, Evaluation {
         this.consultationCost = consultationCost;
     }
 
-    public String getSpeciality() {
+    public DoctorSpeciality getSpeciality() {
         return speciality;
     }
 
@@ -45,7 +46,7 @@ public class Doctor extends Person implements Worker, Evaluation {
         return schedule;
     }
 
-    public void setSpeciality(String speciality) {
+    public void setSpeciality(DoctorSpeciality speciality) {
         this.speciality = speciality;
     }
 
@@ -183,7 +184,7 @@ public class Doctor extends Person implements Worker, Evaluation {
         return "Doctor{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", speciality='" + speciality + '\'' +
+                ", speciality='" + speciality.getDisplayName() + '\'' +
                 ", consultationCost=" + consultationCost +
                 '}';
     }
@@ -246,14 +247,11 @@ public class Doctor extends Person implements Worker, Evaluation {
     public double getRating() {
         int staffManagerMark = StaffManager.evaluateDoctor(this);
         double patientsMark;
-        int sumPatientsMark = 0;
         List<Appointment> appointments = Registry.getAppointmentListByDoctor(this);
         if (appointments.size() == 0) patientsMark = 0;
         else {
-            for (Appointment appointment : appointments) {
-                sumPatientsMark += appointment.getPatient().evaluate();
-            }
-            patientsMark = (double) sumPatientsMark / appointments.size();
+            patientsMark = (double) appointments.stream().mapToInt(appointment ->
+                    appointment.getPatient().evaluate()).sum() / appointments.size();
         }
 
         return (staffManagerMark + patientsMark) / 2;

@@ -1,9 +1,13 @@
 package com.laba.solvd;
 
+import com.laba.solvd.enums.DoctorSpeciality;
+import com.laba.solvd.enums.WeekDay;
 import com.laba.solvd.exception.BankIsNotAvailableException;
 import com.laba.solvd.exception.DoctorIsNotFoundException;
 import com.laba.solvd.exception.IllegalAppointmentIdException;
 import com.laba.solvd.exception.IllegalMedicalReportIdException;
+import com.laba.solvd.interfaces.Department;
+import com.laba.solvd.interfaces.TriFunction;
 import com.laba.solvd.model.Doctor;
 import com.laba.solvd.model.Insurance;
 import com.laba.solvd.model.Nurse;
@@ -16,10 +20,13 @@ import com.laba.solvd.service.PayOffice;
 import com.laba.solvd.service.Registry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import static com.laba.solvd.enums.WeekDay.WED;
 
 public class HospitalApplication {
@@ -46,13 +53,13 @@ public class HospitalApplication {
         //Staff
         Doctor doctor1 =
                 new Doctor("Tom", "Black", 27, "06711111111", "Paladina avenue, 35",
-                        "dentist", 100);
+                        DoctorSpeciality.DENTIST, 100);
         Doctor doctor2 =
                 new Doctor("Henry", "Been", 29, "06711343434", "Pirogova street, 32",
-                        "ortoped", 150);
+                        DoctorSpeciality.ORTHOPAEDIST, 150);
         Doctor doctor3 =
                 new Doctor("Mike", "Butler", 40, "06711567834", "The first street, 1",
-                        "oncolog", 200);
+                        DoctorSpeciality.NEUROLOGIST, 200);
         LOGGER.info(doctor1);
         Nurse nurse1 = new Nurse("Nina", "White", 24, "09000000001", "Popova, 2", 5);
 
@@ -80,7 +87,7 @@ public class HospitalApplication {
         medBook.put("Fever", "Influenza");
         medBook.put("Toothache", "Pulpit");
         medBook.put("Headache", "Hypertension");
-        medBook.put("Stomachache", "Stomach ucler");
+        medBook.put("Stomachache", "Stomach ulcer");
         medBook.put("Cough", "Bronchitis");
         medBook.put("Rash", "Chickenpox");
         doctor1.setMedBook(medBook);
@@ -95,9 +102,12 @@ public class HospitalApplication {
         List<Nurse> nurses = new ArrayList<>();
         nurses.add(nurse1);
         StaffManager staff = new StaffManager(doctors, nurses);
+        LOGGER.info("Doctors by speciality " + DoctorSpeciality.DENTIST.getDisplayName() + ": " +
+                staff.getDoctorsBySpeciality(DoctorSpeciality.DENTIST));
+        staff.rewardBestDoctor();
 
         //Registry
-        Registry registry = new Registry(staff);
+        Registry registry = new Registry();
         registry.registerPatient(patient1);
         int appointment1Id = registry.registerAppointment(doctor1, patient1, WED, 2);
         //int appointment2Id = registry.registerAppointment(doctor2,patient1,SAT,3);
@@ -113,6 +123,7 @@ public class HospitalApplication {
         PayOffice payOffice = new PayOffice();
         Receipt receipt1 = payOffice.acceptPayment(appointment1Id);
         receipt1.print();
+        payOffice.calculateProfit();
 
 
         //Hospital
@@ -124,6 +135,21 @@ public class HospitalApplication {
         }
 
         LOGGER.info("The doctor's " + doctor1.getLastName() + " rating is " + doctor1.getRating());
+
+        //TriFunction usage
+        TriFunction<List<Department>, WeekDay, Integer, List<String>> func = (departments, weekDay, time) ->
+                departments.stream()
+                        .filter(department -> department.isOpened(weekDay, time))
+                        .map(department -> department.getName())
+                        .collect(Collectors.toList());
+
+        List<Department> allHospital = new ArrayList<>();
+        allHospital.add(registry);
+        allHospital.add(payOffice);
+        allHospital.add(clinic);
+        allHospital.add(hospital);
+        LOGGER.info(WeekDay.FRI.getDisplayName() + " 12:00." +
+                func.apply(allHospital, WeekDay.FRI, 12) + " are opened.");
 
 
     }

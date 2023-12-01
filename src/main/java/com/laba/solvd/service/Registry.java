@@ -12,41 +12,26 @@ import com.laba.solvd.process.Appointment;
 import com.laba.solvd.process.StaffManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public final class Registry implements Department {
     private static final Logger LOGGER = LogManager.getLogger(Registry.class);
 
-    private StaffManager staff;
     private List<Patient> patientsInClinic;
     private static List<Appointment> appointmentsList;
 
-    public Registry(StaffManager staff) {
-        this.staff = staff;
+    public Registry() {
         this.patientsInClinic = new ArrayList<>();
         appointmentsList = new ArrayList<>();
     }
 
-    public List<Patient> getPatientsInClinic() {
-        return patientsInClinic;
-    }
-
-    public void setPatientsInClinic(List<Patient> patientsInClinic) {
-        this.patientsInClinic = patientsInClinic;
-    }
-
-    public List<Appointment> getAppointmentsList() {
-        return appointmentsList;
-    }
-
-    public void setAppointmentsList(List<Appointment> appointmentsList) {
-        Registry.appointmentsList = appointmentsList;
-    }
-
     public void registerPatient(Patient patient) {
-        if (patientsInClinic.indexOf(patient) != -1) {
+        if (patientsInClinic.contains(patient)) {
             LOGGER.warn("This patient has already registered.");
         } else {
             patientsInClinic.add(patient);
@@ -55,15 +40,8 @@ public final class Registry implements Department {
     }
 
     public static List<Appointment> getAppointmentListByDoctor(Doctor doctor) {
-        List<Appointment> doctorAppointments = new ArrayList<>();
-
-        for (Appointment appointment : appointmentsList) {
-            if (appointment.getDoctor().equals(doctor)) {
-                doctorAppointments.add(appointment);
-            }
-        }
-
-        return doctorAppointments;
+        return appointmentsList.stream().filter(appointment -> appointment.getDoctor().equals(doctor))
+                .collect(Collectors.toList());
     }
 
     public int registerAppointment(Doctor doctor, Patient patient, WeekDay weekDay, int timeSlot)
@@ -74,7 +52,7 @@ public final class Registry implements Department {
             LOGGER.error(e.getMessage(), e);
         }
 
-        if (staff.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
+        if (StaffManager.findDoctor(doctor.getLastName()).isTimeSlotFree(weekDay, timeSlot)) {
             Random random = new Random();
 
             Appointment appointment = new Appointment(random.nextInt(999), doctor, patient, weekDay, timeSlot);
@@ -93,10 +71,11 @@ public final class Registry implements Department {
     }
 
     private Patient findPatient(String lastName) throws PatientIsNotFoundException {
-        for (Patient patient : patientsInClinic) {
-            if (patient.getLastName().equals(lastName)) {
-                return patient;
-            }
+        Patient foundPatient = patientsInClinic.stream()
+                .filter(patient -> patient.getLastName().equals(lastName))
+                .collect(Collectors.toList()).get(0);
+        if (foundPatient != null) {
+            return foundPatient;
         }
         throw new PatientIsNotFoundException("You should register patient " + lastName + " first");
 
@@ -111,8 +90,38 @@ public final class Registry implements Department {
         throw new IllegalAppointmentIdException("Appointment id " + id + " is wrong");
     }
 
+    public List<Appointment> showPlannedAppointments() {
+        return appointmentsList.stream()
+                .filter(appointment -> appointment.getStatus().equals(AppointmentStatus.PLANED))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public boolean isOpened(WeekDay weekDay, int hour) {
         return hour >= 8 && hour < 19;
+    }
+
+
+    public List<Patient> getPatientsInClinic() {
+        return patientsInClinic;
+    }
+
+    public void setPatientsInClinic(List<Patient> patientsInClinic) {
+        this.patientsInClinic = patientsInClinic;
+    }
+
+    public List<Appointment> getAppointmentsList() {
+        return appointmentsList.stream()
+                .sorted(Comparator.comparingInt(app -> app.getStatus().getStageNumber()))
+                .collect(Collectors.toList());
+    }
+
+    public void setAppointmentsList(List<Appointment> appointmentsList) {
+        Registry.appointmentsList = appointmentsList;
+    }
+
+    @Override
+    public String getName() {
+        return "Registry";
     }
 }
