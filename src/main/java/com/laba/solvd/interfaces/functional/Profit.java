@@ -1,4 +1,4 @@
-package com.laba.solvd.interfaces;
+package com.laba.solvd.interfaces.functional;
 
 import java.util.Set;
 

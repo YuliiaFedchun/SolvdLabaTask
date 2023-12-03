@@ -81,8 +81,9 @@ public final class Clinic implements Department, Evaluation {
 
     @Override
     public double getRating() {
-        int markSum = medicalReportList.stream().mapToInt(report ->
-                report.getAppointment().getPatient().evaluate()).sum();
+        int markSum = medicalReportList.stream()
+                .mapToInt(report -> report.getAppointment().getPatient().evaluate())
+                .sum();
         return (medicalReportCount != 0) ? (double) markSum / medicalReportCount : 0;
     }
 

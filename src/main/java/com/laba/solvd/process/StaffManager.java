@@ -2,7 +2,7 @@ package com.laba.solvd.process;
 
 import com.laba.solvd.enums.DoctorSpeciality;
 import com.laba.solvd.exception.DoctorIsNotFoundException;
-import com.laba.solvd.interfaces.BestWorker;
+import com.laba.solvd.interfaces.functional.BestWorker;
 import com.laba.solvd.model.Doctor;
 import com.laba.solvd.model.Nurse;
 import org.apache.logging.log4j.LogManager;
@@ -64,7 +64,7 @@ public class StaffManager {
     public void rewardBestDoctor() {
         BestWorker<Doctor, Doctor> bestWorker = (doctors) -> {
             Optional<Doctor> max = doctors.stream()
-                    .max(Comparator.comparingInt(doctor -> evaluateDoctor(doctor)));
+                                    .max(Comparator.comparingInt(doctor -> evaluateDoctor(doctor)));
 
             if (!max.isEmpty()) {
                 return max.get();

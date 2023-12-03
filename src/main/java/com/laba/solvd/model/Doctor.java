@@ -192,9 +192,8 @@ public class Doctor extends Person implements Worker, Evaluation {
     public final MedicalReport makeConsultation(Appointment appointment, String symptom) {
         String diagnosis = makeDiagnosis(symptom);
         String recommendation = makeRecommendation(diagnosis);
-        Random random = new Random();
 
-        return new MedicalReport(random.nextInt(999), appointment, symptom, diagnosis,
+        return new MedicalReport(new Random().nextInt(999), appointment, symptom, diagnosis,
                 recommendation, decideToHospitalize());
     }
 
@@ -239,8 +238,7 @@ public class Doctor extends Person implements Worker, Evaluation {
     }
 
     private boolean decideToHospitalize() {
-        Random random = new Random();
-        return random.nextBoolean();
+        return new Random().nextBoolean();
     }
 
     @Override
@@ -250,8 +248,9 @@ public class Doctor extends Person implements Worker, Evaluation {
         List<Appointment> appointments = Registry.getAppointmentListByDoctor(this);
         if (appointments.size() == 0) patientsMark = 0;
         else {
-            patientsMark = (double) appointments.stream().mapToInt(appointment ->
-                    appointment.getPatient().evaluate()).sum() / appointments.size();
+            patientsMark = (double) appointments.stream()
+                    .mapToInt(appointment -> appointment.getPatient().evaluate())
+                    .sum() / appointments.size();
         }
 
         return (staffManagerMark + patientsMark) / 2;

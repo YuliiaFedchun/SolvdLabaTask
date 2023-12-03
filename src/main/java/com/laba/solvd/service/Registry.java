@@ -13,10 +13,7 @@ import com.laba.solvd.process.StaffManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public final class Registry implements Department {
@@ -71,11 +68,11 @@ public final class Registry implements Department {
     }
 
     private Patient findPatient(String lastName) throws PatientIsNotFoundException {
-        Patient foundPatient = patientsInClinic.stream()
+        Optional<Patient> foundPatient = patientsInClinic.stream()
                 .filter(patient -> patient.getLastName().equals(lastName))
-                .collect(Collectors.toList()).get(0);
-        if (foundPatient != null) {
-            return foundPatient;
+                .findAny();
+        if (!foundPatient.isEmpty()) {
+            return foundPatient.get();
         }
         throw new PatientIsNotFoundException("You should register patient " + lastName + " first");
 

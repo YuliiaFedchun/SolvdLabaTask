@@ -7,7 +7,7 @@ import com.laba.solvd.exception.DoctorIsNotFoundException;
 import com.laba.solvd.exception.IllegalAppointmentIdException;
 import com.laba.solvd.exception.IllegalMedicalReportIdException;
 import com.laba.solvd.interfaces.Department;
-import com.laba.solvd.interfaces.TriFunction;
+import com.laba.solvd.interfaces.functional.TriFunction;
 import com.laba.solvd.model.Doctor;
 import com.laba.solvd.model.Insurance;
 import com.laba.solvd.model.Nurse;

@@ -1,4 +1,4 @@
-package com.laba.solvd.interfaces;
+package com.laba.solvd.interfaces.functional;
 
 @FunctionalInterface
 public interface TriFunction<T, U, V, R> {
