@@ -16,26 +16,9 @@ public class Patient extends Person {
 
     private String email;
     private Insurance insurance;
-    private PaymentSystem paymentSystem;
 
     public Patient(String firstName, String lastName, int age, String phoneNumber, String address, String email) {
         super(firstName, lastName, age, phoneNumber, address);
-        this.email = email;
-    }
-
-    public Insurance getInsurance() {
-        return insurance;
-    }
-
-    public void setInsurance(Insurance insurance) {
-        this.insurance = insurance;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -88,4 +71,22 @@ public class Patient extends Person {
         Random random = new Random();
         return random.nextInt(11);
     }
+
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+
+    public void setInsurance(Insurance insurance) {
+        this.insurance = insurance;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
 }

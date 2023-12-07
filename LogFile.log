@@ -1,42 +1,24 @@
-15:32:55.762 [main] HospitalApplication.main [42] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
-15:32:55.793 [main] HospitalApplication.main [56] INFO  - Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
-15:32:55.809 [main] Registry.registerPatient [53] INFO  - Patient Brown is registered.
-15:32:55.824 [main] Registry.registerAppointment [86] INFO  - Your appointment for Brown is planed. 
+16:33:46.899 [main] HospitalApplication.main [49] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
+16:33:46.914 [main] HospitalApplication.main [63] INFO  - Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
+16:33:46.930 [main] HospitalApplication.main [105] INFO  - Doctors by speciality dentist: [Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}]
+16:33:46.946 [main] StaffManager.rewardBestDoctor [77] INFO  - The best doctor Butler. He/she gets the reward: 2000$.
+16:33:46.961 [main] Registry.registerPatient [35] INFO  - Patient Brown is registered.
+16:33:46.961 [main] Registry.registerAppointment [61] INFO  - Your appointment for Brown is planed. 
 Appointment info: 
-com.laba.solvd.process.Appointment@29ac1c17
-15:32:55.846 [main] Appointment.print [94] INFO  - Appointment{id=763
+com.laba.solvd.process.Appointment@8b8fc2a5
+16:33:46.999 [main] Appointment.print [95] INFO  - Appointment{id=188
 doctor=Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
 patient=Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
 weekDay=WED, time=10:00}
-15:32:55.846 [main] Clinic.admitPatient [44] INFO  - Mr./Mrs. Brown, thanks for your visit. 
+16:33:46.999 [main] Clinic.admitPatient [45] INFO  - Mr./Mrs. Brown, thanks for your visit. 
 Your recommendation and treatment: To breathe moist cool air. To drink plenty of fluids.
-15:32:55.878 [main] MedicalReport.print [78] INFO  - MedicalReport{id=47, symptom=Cough, diagnosis=Bronchitis, recommendation='To breathe moist cool air. To drink plenty of fluids.', hospitalization=false}
-15:32:55.893 [main] PayOffice.acceptPayment [52] INFO  - Mr./Mrs. Brown, you should pay: 40.0$
-15:32:55.893 [main] CreditCard.pay [17] ERROR - Bank isn't response. Try later.
-com.laba.solvd.exception.BankIsNotAvailableException: Bank isn't response. Try later.
-	at com.laba.solvd.model.payment.Bank.getBankSession(Bank.java:17) ~[classes/:?]
-	at com.laba.solvd.model.payment.CreditCard.pay(CreditCard.java:14) [classes/:?]
-	at com.laba.solvd.service.PayOffice.acceptPayment(PayOffice.java:55) [classes/:?]
-	at com.laba.solvd.HospitalApplication.main(HospitalApplication.java:114) [classes/:?]
-15:32:55.925 [main] Receipt.print [38] INFO  - Receipt{patient=Mike Brown, cost=40.0$}
-15:32:55.925 [main] Hospital.hospitalizePatient [48] INFO  - The patient does not require hospitalization.
-15:32:55.940 [main] HospitalApplication.main [126] INFO  - The doctor's Black rating is 5.5
-10:28:58.411 [main] HospitalApplication.main [42] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
-10:28:58.433 [main] HospitalApplication.main [56] INFO  - Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
-10:28:58.448 [main] Registry.registerPatient [53] INFO  - Patient Brown is registered.
-10:28:58.464 [main] Registry.registerAppointment [86] INFO  - Your appointment for Brown is planed. 
-Appointment info: 
-com.laba.solvd.process.Appointment@29ac1c17
-10:28:58.495 [main] Appointment.print [94] INFO  - Appointment{id=450
-doctor=Doctor{firstName='Tom', lastName='Black', speciality='dentist', consultationCost=100}
-patient=Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'}
-weekDay=WED, time=10:00}
-10:28:58.495 [main] Clinic.admitPatient [44] INFO  - Mr./Mrs. Brown, thanks for your visit. 
-Your recommendation and treatment: To breathe moist cool air. To drink plenty of fluids.
-10:28:58.511 [main] MedicalReport.print [78] INFO  - MedicalReport{id=200, symptom=Cough, diagnosis=Bronchitis, recommendation='To breathe moist cool air. To drink plenty of fluids.', hospitalization=false}
-10:28:58.535 [main] PayOffice.acceptPayment [52] INFO  - Mr./Mrs. Brown, you should pay: 40.0$
-10:28:58.545 [main] CreditCard.pay [15] INFO  - 40.0$ was payed by credit card. Transaction id: 93
-10:28:58.545 [main] BankSession.close [27] INFO  - Bank session is closed.
-10:28:58.555 [main] Receipt.print [38] INFO  - Receipt{patient=Mike Brown, cost=40.0$}
-10:28:58.565 [main] Hospital.hospitalizePatient [48] INFO  - The patient does not require hospitalization.
-10:28:58.565 [main] HospitalApplication.main [126] INFO  - The doctor's Black rating is 4.5
+16:33:47.015 [main] MedicalReport.print [78] INFO  - MedicalReport{id=926, symptom=Cough, diagnosis=Bronchitis, recommendation=To breathe moist cool air. To drink plenty of fluids., hospitalization=true}
+16:33:47.030 [main] PayOffice.acceptPayment [53] INFO  - Mr./Mrs. Brown, you should pay: 40.0$
+16:33:47.046 [main] PaymentByBankDetails.pay [17] INFO  - 40.0$ was payed on the bank account UA90097052014298656320981. Transaction id: 67
+16:33:47.046 [main] BankSession.close [27] INFO  - Bank session is closed.
+16:33:47.062 [main] Receipt.print [38] INFO  - Receipt{patient=Mike Brown, cost=40.0$}
+16:33:47.077 [main] PayOffice.calculateProfit [87] INFO  - Profit of the clinic: 40.0$.
+16:33:47.084 [main] Hospital.hospitalizePatient [38] INFO  - The patient Brown was admitted to the hospital.
+16:33:47.086 [main] HospitalApplication.main [134] INFO  - Patient{firstName='Mike', lastName='Brown', age=30, phoneNumber='05077777777'} is in the hospital.
+16:33:47.094 [main] HospitalApplication.main [137] INFO  - The doctor's Black rating is 3.5
+16:33:47.104 [main] HospitalApplication.main [151] INFO  - Friday 12:00.[Registry, PayOffice, Clinic, Hospital] are opened.

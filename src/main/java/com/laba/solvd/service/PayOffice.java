@@ -5,6 +5,7 @@ import com.laba.solvd.enums.WeekDay;
 import com.laba.solvd.exception.BankIsNotAvailableException;
 import com.laba.solvd.exception.IllegalAppointmentIdException;
 import com.laba.solvd.interfaces.Department;
+import com.laba.solvd.interfaces.functional.Profit;
 import com.laba.solvd.process.Appointment;
 import com.laba.solvd.process.Receipt;
 import org.apache.logging.log4j.LogManager;
@@ -75,5 +76,19 @@ public final class PayOffice implements Department {
     public boolean isOpened(WeekDay weekDay, int hour) {
         return weekDay != WeekDay.SAT && weekDay != WeekDay.SUN &&
                 hour >= 9 && hour < 19;
+    }
+
+    public void calculateProfit() {
+        Profit<Receipt, Double> profit = (payments) ->
+                payments.stream()
+                        .mapToDouble(receipt -> receipt.getCost())
+                        .sum();
+        Double clinicProfit = profit.calculate(payments);
+        LOGGER.info("Profit of the clinic: " + clinicProfit + "$.");
+    }
+
+    @Override
+    public String getName() {
+        return "PayOffice";
     }
 }

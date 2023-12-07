@@ -20,13 +20,6 @@ public final class Hospital implements Department, Evaluation {
         this.patientsInHospital = new MyLinkedList<>();
     }
 
-    public MyLinkedList<Patient> getPatientsInHospital() {
-        return patientsInHospital;
-    }
-
-    public void setPatientsInHospital(MyLinkedList<Patient> patientsInHospital) {
-        this.patientsInHospital = patientsInHospital;
-    }
 
     public boolean hospitalizePatient(int reportId, Patient patient)
             throws IllegalMedicalReportIdException {
@@ -83,5 +76,19 @@ public final class Hospital implements Department, Evaluation {
             return markSum / patientsInHospital.size();
         } else return 0;
     }
+
+    public MyLinkedList<Patient> getPatientsInHospital() {
+        return patientsInHospital;
+    }
+
+    public void setPatientsInHospital(MyLinkedList<Patient> patientsInHospital) {
+        this.patientsInHospital = patientsInHospital;
+    }
+
+    @Override
+    public String getName() {
+        return "Hospital";
+    }
+
 
 }
